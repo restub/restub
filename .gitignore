@@ -1,0 +1,6 @@
+/.vs
+/**/bin
+/**/obj
+/**/*.bak
+/.temp
+/CdekSdk.Tests/TestResults/*.*

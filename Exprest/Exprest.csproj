@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net462;net6.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Alexey Yakovlev</Authors>
+    <Copyright>Alexey Yakovlev</Copyright>
+    <Company>https://github.com/yallie</Company>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <PackageId>Exprest</PackageId>
+    <PackageProjectUrl>https://github.com/exprest</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/exprest</RepositoryUrl>
+    <PackageTags>rest; api; framework</PackageTags>
+    <Title>exprest</Title>
+    <Description>Express framework for building REST API clients based on RestSharp.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="RestSharp" Version="106.15.0" />
+  </ItemGroup>
+
+</Project>
