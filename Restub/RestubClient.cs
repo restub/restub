@@ -12,7 +12,7 @@ namespace Restub
     /// <summary>
     /// Base class for implementing REST API clients.
     /// </summary>
-    public partial class RestubClient
+    public abstract partial class RestubClient
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RestubClient"/> class.
@@ -36,11 +36,17 @@ namespace Restub
 
             // Set up REST client
             Client = сlient;
-            Client.Authenticator = new CredentialsAuthenticator(this, credentials);
+            Client.Authenticator = CreateAuthenticator();
             Client.Encoding = Encoding.UTF8;
             Client.ThrowOnDeserializationError = false;
             Client.UseSerializer(() => Serializer);
         }
+
+        /// <summary>
+        /// When overridden in the derived class, creates the authenticator.
+        /// </summary>
+        /// <returns>Authenticator for REST request.</returns>
+        protected abstract Authenticator CreateAuthenticator();
 
         /// <summary>
         /// Gets the REST API client.

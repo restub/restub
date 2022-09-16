@@ -5,23 +5,20 @@ using RestSharp.Authenticators;
 namespace Restub
 {
     /// <summary>
-    /// RestSharp authenticator that uses credentials.
+    /// Abstract RestSharp authenticator that uses credentials.
     /// </summary>
-    /// <remarks>
-    /// Usage: subclass, override SetAuthToken, Authenticate and, optionally, Logout methods.
-    /// </remarks>
-    internal class CredentialsAuthenticator : IAuthenticator
+    public abstract class Authenticator : IAuthenticator
     {
-        public CredentialsAuthenticator(RestubClient apiClient, Credentials credentials)
+        public Authenticator(RestubClient apiClient, Credentials credentials)
         {
             State = AuthState.NotAuthenticated;
-            Client = apiClient;
-            Credentials = credentials;
+            BaseClient = apiClient;
+            BaseCredentials = credentials;
         }
 
-        private RestubClient Client { get; set; }
+        protected RestubClient BaseClient { get; set; }
 
-        private Credentials Credentials { get; set; }
+        protected Credentials BaseCredentials { get; set; }
 
         private AuthState State { get; set; }
 
@@ -30,18 +27,12 @@ namespace Restub
             NotAuthenticated, InProgress, Authenticated
         }
 
-        protected internal AuthToken AuthToken { get; set; }
+        protected internal AuthToken BaseAuthToken { get; set; }
 
         // real API client will save an authentication header
         // private string AuthHeader { get; set; }
 
-        public virtual void SetAuthToken(AuthToken authToken)
-        {
-            // real client will use something like:
-            // AuthHeader = string.IsNullOrWhiteSpace(authToken?.AccessToken) ?
-            //    null : // $"{authToken.TokenType ?? "Bearer"} "
-            //    "Bearer " + authToken.AccessToken;
-        }
+        public abstract void SetAuthToken(AuthToken authToken);
 
         public virtual void Authenticate(IRestClient client, IRestRequest request)
         {
@@ -49,8 +40,8 @@ namespace Restub
             if (State == AuthState.NotAuthenticated)
             {
                 State = AuthState.InProgress;
-                AuthToken = Credentials.Authenticate(Client);
-                SetAuthToken(AuthToken);
+                BaseAuthToken = BaseCredentials.Authenticate(BaseClient);
+                SetAuthToken(BaseAuthToken);
                 State = AuthState.Authenticated;
             }
 
@@ -64,7 +55,7 @@ namespace Restub
         public virtual void Logout()
         {
             State = AuthState.NotAuthenticated;
-            AuthToken = null;
+            BaseAuthToken = null;
         }
     }
 }
