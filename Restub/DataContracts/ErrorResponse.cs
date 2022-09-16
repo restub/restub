@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Exprest.DataContracts
+namespace Restub.DataContracts
 {
     /// <summary>
     /// Represents error messages.

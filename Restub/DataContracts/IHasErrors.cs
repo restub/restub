@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Exprest.DataContracts
+namespace Restub.DataContracts
 {
     /// <summary>
     /// Interface for REST responses containing error collections.

@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using RestSharp.Serialization;
 
-namespace Exprest.Toolbox
+namespace Restub.Toolbox
 {
     /// <summary>
     /// Newtonsoft.Json serializer.

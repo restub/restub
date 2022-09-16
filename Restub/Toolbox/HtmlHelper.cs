@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Exprest.Toolbox
+namespace Restub.Toolbox
 {
     internal static class HtmlHelper
     {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Converters;
 
-namespace Exprest.Toolbox
+namespace Restub.Toolbox
 {
     /// <summary>
     /// Some date properties don't have the time.

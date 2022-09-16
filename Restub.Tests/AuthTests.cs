@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using Exprest.DataContracts;
+using Restub.DataContracts;
 using NUnit.Framework;
 
-namespace Exprest.Tests
+namespace Restub.Tests
 {
     [TestFixture]
     public class AuthTests

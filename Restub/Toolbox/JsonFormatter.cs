@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Exprest.Toolbox
+namespace Restub.Toolbox
 {
     /// <summary>
     /// Dependency-free JSON formatter.

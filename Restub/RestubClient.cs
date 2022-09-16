@@ -1,36 +1,35 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
-using Exprest.DataContracts;
-using Exprest.Toolbox;
+using Restub.DataContracts;
+using Restub.Toolbox;
 using RestSharp;
 
-namespace Exprest
+namespace Restub
 {
     /// <summary>
     /// Base class for implementing REST API clients.
     /// </summary>
-    public partial class ExprestClient
+    public partial class RestubClient
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExprestClient"/> class.
+        /// Initializes a new instance of the <see cref="RestubClient"/> class.
         /// </summary>
         /// <param name="baseUrl">Base API endpoint.</param>
         /// <param name="credentials">Credentials.</param>
-        public ExprestClient(string baseUrl, Credentials credentials)
+        public RestubClient(string baseUrl, Credentials credentials)
             : this(new RestClient(baseUrl), credentials)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExprestClient"/> class.
+        /// Initializes a new instance of the <see cref="RestubClient"/> class.
         /// </summary>
         /// <param name="сlient">REST API client.</param>
         /// <param name="credentials">Credentials.</param>
-        public ExprestClient(IRestClient сlient, Credentials credentials)
+        public RestubClient(IRestClient сlient, Credentials credentials)
         {
             Credentials = credentials;
             Serializer = new NewtonsoftSerializer();
@@ -76,7 +75,7 @@ namespace Exprest
             }
         }
 
-        private void ThrowOnFailure<T>(IRestResponse<T> response)
+        protected virtual void ThrowOnFailure<T>(IRestResponse<T> response)
         {
             // if response is successful, but it has errors, treat is as failure
             if (response.Data is IHasErrors hasErrors && hasErrors.GetErrors().Any())
@@ -88,7 +87,7 @@ namespace Exprest
             ThrowOnFailure(response as IRestResponse);
         }
 
-        private void ThrowOnFailure(IRestResponse response)
+        protected virtual void ThrowOnFailure(IRestResponse response)
         {
             if (!response.IsSuccessful)
             {
@@ -145,16 +144,11 @@ namespace Exprest
                 }
 
                 // finally, throw it
-                throw new ExprestException(response.StatusCode, errorMessage, errorResponse, response.ErrorException);
+                ThrowException(response, errorMessage, errorResponse);
             }
         }
 
-        internal static string GetErrorMessage(IHasErrors errorResponse) =>
-            string.Join(". ", errorResponse?.GetErrors()?.Select(e => e.Message) ?? new[] { string.Empty }
-                .Distinct()
-                .Where(m => !string.IsNullOrWhiteSpace(m)));
-
-        private void ThrowOnFailure(IRestResponse response, IHasErrors errorResponse)
+        protected virtual void ThrowOnFailure(IRestResponse response, IHasErrors errorResponse)
         {
             // if a response has errors, treat it as a failure
             if (errorResponse?.GetErrors()?.Any() ?? false)
@@ -170,9 +164,19 @@ namespace Exprest
                     errorMessage = response.Content;
                 }
 
-                throw new ExprestException(response.StatusCode, errorMessage, errorResponse, response.ErrorException);
+                ThrowException(response, errorMessage, errorResponse);
             }
         }
+
+        protected virtual void ThrowException(IRestResponse response, string errorMessage, IHasErrors errorResponse)
+        {
+            throw new RestubException(response.StatusCode, errorMessage, response.ErrorException);
+        }
+
+        internal static string GetErrorMessage(IHasErrors errorResponse) =>
+            string.Join(". ", errorResponse?.GetErrors()?.Select(e => e.Message) ?? new[] { string.Empty }
+                .Distinct()
+                .Where(m => !string.IsNullOrWhiteSpace(m)));
 
         /// <summary>
         /// Executes the given request and checks the result.

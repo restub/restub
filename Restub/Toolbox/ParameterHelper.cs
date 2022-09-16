@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using RestSharp;
 
-namespace Exprest.Toolbox
+namespace Restub.Toolbox
 {
     /// <summary>
     /// Helper class to transform DTO classes into REST parameters.

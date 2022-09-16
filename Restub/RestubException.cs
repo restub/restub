@@ -2,32 +2,33 @@
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
-using Exprest.DataContracts;
+using Restub.DataContracts;
 
-namespace Exprest
+namespace Restub
 {
     /// <summary>
-    /// Base exception class.
+    /// Base REST exception class.
     /// </summary>
     [Serializable]
-    public class ExprestException : Exception
+    public class RestubException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExprestException"/> class.
+        /// Initializes a new instance of the <see cref="RestubException"/> class.
         /// </summary>
         /// <param name="code">HTTP status code.</param>
         /// <param name="message">Error message.</param>
         /// <param name="errorResponse"><see cref="ErrorResponse"/> instance, if available.</param>
         /// <param name="innerException">Inner <see cref="Exception"/> instance.</param>
-        public ExprestException(HttpStatusCode code, string message, IHasErrors errorResponse, Exception innerException)
+        public RestubException(HttpStatusCode code, string message, Exception innerException)
             : base(GetMessage(code, message), innerException)
         {
             StatusCode = code;
-            ErrorResponse = new ErrorResponse
-            {
-                Errors = (errorResponse?.GetErrors() ?? Enumerable.Empty<Error>()).ToList(),
-            };
         }
+
+        /// <summary>
+        /// HTTP status code.
+        /// </summary>
+        public HttpStatusCode StatusCode { get; set; }
 
         private static string GetMessage(HttpStatusCode code, string message)
         {
@@ -40,20 +41,10 @@ namespace Exprest
         }
 
         /// <inheritdoc/>
-        protected ExprestException(SerializationInfo info, StreamingContext context)
+        protected RestubException(SerializationInfo info, StreamingContext context)
         {
             StatusCode = (HttpStatusCode)info.GetInt32("Code");
         }
-
-        /// <summary>
-        /// HTTP status code.
-        /// </summary>
-        public HttpStatusCode StatusCode { get; set; }
-
-        /// <summary>
-        /// <see cref="ErrorResponse"/> instance returned by server.
-        /// </summary>
-        public ErrorResponse ErrorResponse { get; set; }
 
         /// <inheritdoc/>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)

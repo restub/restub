@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Exprest.DataContracts;
+using Restub.DataContracts;
 using NUnit.Framework;
 
-namespace Exprest.Tests
+namespace Restub.Tests
 {
     [TestFixture]
     public class ErrorTests
@@ -12,10 +12,10 @@ namespace Exprest.Tests
         [Test]
         public void ErrorResponseGetsConverterToAStringMessage()
         {
-            Assert.That(ExprestClient.GetErrorMessage(null), Is.EqualTo(string.Empty));
-            Assert.That(ExprestClient.GetErrorMessage(new ErrorResponse()), Is.EqualTo(string.Empty));
+            Assert.That(RestubClient.GetErrorMessage(null), Is.EqualTo(string.Empty));
+            Assert.That(RestubClient.GetErrorMessage(new ErrorResponse()), Is.EqualTo(string.Empty));
 
-            var msg = ExprestClient.GetErrorMessage(new ErrorResponse
+            var msg = RestubClient.GetErrorMessage(new ErrorResponse
             {
                 Errors = new List<Error>
                 {

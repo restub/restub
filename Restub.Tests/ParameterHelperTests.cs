@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Exprest.Toolbox;
+using Restub.Toolbox;
 using NUnit.Framework;
 using RestSharp;
 
-namespace Exprest.Tests
+namespace Restub.Tests
 {
     [TestFixture]
     public class ParameterHelperTests

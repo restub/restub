@@ -1,8 +1,8 @@
-﻿using Exprest.DataContracts;
+﻿using Restub.DataContracts;
 using RestSharp;
 using RestSharp.Authenticators;
 
-namespace Exprest
+namespace Restub
 {
     /// <summary>
     /// RestSharp authenticator that uses credentials.
@@ -12,14 +12,14 @@ namespace Exprest
     /// </remarks>
     internal class CredentialsAuthenticator : IAuthenticator
     {
-        public CredentialsAuthenticator(ExprestClient apiClient, Credentials credentials)
+        public CredentialsAuthenticator(RestubClient apiClient, Credentials credentials)
         {
             State = AuthState.NotAuthenticated;
             Client = apiClient;
             Credentials = credentials;
         }
 
-        private ExprestClient Client { get; set; }
+        private RestubClient Client { get; set; }
 
         private Credentials Credentials { get; set; }
 

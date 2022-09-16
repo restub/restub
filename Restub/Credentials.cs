@@ -1,6 +1,6 @@
-﻿using Exprest.DataContracts;
+﻿using Restub.DataContracts;
 
-namespace Exprest
+namespace Restub
 {
     /// <summary>
     /// Abstract credentials.
@@ -15,7 +15,7 @@ namespace Exprest
         /// Authenticates the client using account/secret pair.
         /// </summary>
         /// <param name="client">API client to make an authentication request.</param>
-        public virtual AuthToken Authenticate(ExprestClient client)
+        public virtual AuthToken Authenticate(RestubClient client)
         {
             // real API client will call something like:
             // client.GetAuthToken(ClientAccount, ClientSecret);

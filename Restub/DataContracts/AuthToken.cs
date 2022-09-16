@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Exprest.DataContracts
+namespace Restub.DataContracts
 {
     [DataContract]
     public class AuthToken

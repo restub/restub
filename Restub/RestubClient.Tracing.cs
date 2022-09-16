@@ -4,14 +4,14 @@ using System.Globalization;
 using System.Linq;
 using RestSharp;
 using RestSharp.Serialization.Json;
-using Exprest.Toolbox;
+using Restub.Toolbox;
 
-namespace Exprest
+namespace Restub
 {
     /// <remarks>
-    /// CDEK API Client, tracing primitives.
+    /// Stub REST client, tracing primitives.
     /// </remarks>
-    public partial class ExprestClient
+    public partial class RestubClient
     {
         private const string ApiMethodNameHeaderName = "X-ApiMethodName";
         private const string ApiTimestampParameterName = "X-ApiTimestamp";

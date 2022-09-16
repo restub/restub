@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using Exprest.Toolbox;
+using Restub.Toolbox;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Exprest.Tests
+namespace Restub.Tests
 {
     [TestFixture]
     public class SerializerTests

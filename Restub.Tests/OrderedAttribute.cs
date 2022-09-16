@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using NUnit.Framework;
 
-namespace Exprest.Tests
+namespace Restub.Tests
 {
     /// <summary>
     /// Implicit Order attribute that uses the source line number as an order.

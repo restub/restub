@@ -6,7 +6,7 @@ using RestSharp;
 using RestSharp.Serialization.Xml;
 using RestSharp.Serializers;
 
-namespace Exprest.Tests
+namespace Restub.Tests
 {
     public class StubRequestBase : IRestRequest
     {

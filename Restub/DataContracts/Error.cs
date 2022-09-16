@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Exprest.DataContracts
+namespace Restub.DataContracts
 {
     /// <summary>
     /// Single error message and code.

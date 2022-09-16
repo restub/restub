@@ -1,12 +1,12 @@
-﻿using Exprest.DataContracts;
-using Exprest.Toolbox;
+﻿using Restub.DataContracts;
+using Restub.Toolbox;
 
-namespace Exprest
+namespace Restub
 {
     /// <remarks>
     /// Sample athentication primitives to be called by Credentials class.
     /// </remarks>
-    public partial class ExprestClient
+    public partial class RestubClient
     {
         ///// <summary>
         ///// Acquires a JWT token for the API.
