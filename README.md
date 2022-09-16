@@ -1,6 +1,7 @@
-# Exprest
+# Restub
 
-Exprest framework is a RestSharp library wrapper to simplify building REST API clients with logging and tracing support.
+Restub framework is a stub code building REST API clients with tracing support.
+It uses RestSharp library and Newtonsoft.Json serializer behind the scenes.
 
 # Getting started
 
