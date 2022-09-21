@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using Pair = System.Collections.DictionaryEntry;
 
 namespace Restub.Tests
 {
@@ -12,6 +14,12 @@ namespace Restub.Tests
     {
         static TestBase()
         {
+            var vars = Environment.GetEnvironmentVariables().OfType<Pair>();
+            foreach (var var in vars.OrderBy(v => v.Key))
+            {
+                TestContext.Progress.WriteLine($"{var.Key} = {var.Value}");
+            }
+
             if (string.IsNullOrEmpty(Env("TEST_ENVIRONMENT_INITIALIZED")))
             {
                 SetEnvironmentVariables(@".temp\vars.json");

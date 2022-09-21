@@ -8,6 +8,15 @@ jobs:
   build:
 
     runs-on: windows-latest
+    environment: Test
+
+    # copy secrets to environment variables
+    env:
+      TEST_ENVIRONMENT_INITIALIZED: true
+      OTPRAVKA_USER_PASSWORD: '${{secrets.OTPRAVKA_USER_PASSWORD}}'
+      OTPRAVKA_USER_PHONE: '${{secrets.OTPRAVKA_USER_PHONE}}'
+      OTPRAVKA_ACCESS_TOKEN: '${{secrets.OTPRAVKA_ACCESS_TOKEN}}'
+      OTPRAVKA_USER_EMAIL: '${{secrets.OTPRAVKA_USER_EMAIL}}'
 
     steps:
     - name: Checkout source
