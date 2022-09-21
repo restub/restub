@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using RestSharp;
 
-namespace Restub.Tests.Pochta
+namespace Restub.Tests.Pochta.Otpravka
 {
     public class OtpravkaAuthenticator : Authenticator<OtpravkaClient, OtpravkaAuthToken, OtpravkaCredentials>
     {

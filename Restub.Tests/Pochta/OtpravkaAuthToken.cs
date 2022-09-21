@@ -1,6 +1,6 @@
 ﻿using Restub.DataContracts;
 
-namespace Restub.Tests.Pochta
+namespace Restub.Tests.Pochta.Otpravka
 {
     public class OtpravkaAuthToken : AuthToken
     {

@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using NUnit.Framework;
 
-namespace Restub.Tests.Pochta
+namespace Restub.Tests.Pochta.Otpravka
 {
     [TestFixture]
     public class OtpravkaClientTests : TestBase

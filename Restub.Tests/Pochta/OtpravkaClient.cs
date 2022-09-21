@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Restub.Tests.Pochta
+namespace Restub.Tests.Pochta.Otpravka
 {
     /// <summary>
     /// Pochta.ru Otpravka API sample client

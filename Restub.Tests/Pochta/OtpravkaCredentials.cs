@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Restub.Tests.Pochta
+namespace Restub.Tests.Pochta.Otpravka
 {
     public class OtpravkaCredentials : Credentials<OtpravkaClient, OtpravkaAuthToken>
     {

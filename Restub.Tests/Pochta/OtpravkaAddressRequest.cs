@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Restub.Tests.Pochta
+namespace Restub.Tests.Pochta.Otpravka
 {
     [DataContract]
     public class OtpravkaAddressRequest
