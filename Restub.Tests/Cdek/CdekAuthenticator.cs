@@ -5,7 +5,7 @@ namespace Restub.Tests.Cdek
     /// <summary>
     /// Sample CDEK API authenticator using credentials.
     /// </summary>
-    internal class CdekAuthenticator : Authenticator<CdekClient, CdekAuthToken, CdekCredentials>
+    public class CdekAuthenticator : Authenticator<CdekClient, CdekAuthToken, CdekCredentials>
     {
         public CdekAuthenticator(CdekClient apiClient, CdekCredentials credentials)
             : base(apiClient, credentials)

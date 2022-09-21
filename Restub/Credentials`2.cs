@@ -11,7 +11,7 @@ namespace Restub
     /// </remarks>
     /// <typeparam name="TClient">The type of the REST client.</typeparam>
     /// <typeparam name="TAuthToken">The type of the auth token DTO.</typeparam>
-    public class Credentials<TClient, TAuthToken> : Credentials
+    public abstract class Credentials<TClient, TAuthToken> : Credentials
         where TClient : RestubClient
         where TAuthToken : AuthToken, new()
     {
@@ -23,11 +23,9 @@ namespace Restub
         /// Authenticates the client using account/secret pair.
         /// </summary>
         /// <param name="client">API client to make an authentication request.</param>
-        public virtual TAuthToken Authenticate(TClient client)
-        {
+        public abstract TAuthToken Authenticate(TClient client);
             // real API client would call something like:
             // client.GetAuthToken(ClientAccount, ClientSecret);
-            return new TAuthToken();
-        }
+            // or return new TAuthToken();
     }
 }
