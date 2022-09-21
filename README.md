@@ -1,5 +1,10 @@
 # Restub
 
+[![.NET](https://github.com/restub/restub/actions/workflows/dotnet.yml/badge.svg)](https://github.com/restub/restub/actions/workflows/dotnet.yml)
+[![CodeFactor](https://www.codefactor.io/repository/github/restub/restub/badge)](https://www.codefactor.io/repository/github/restub/restub)
+[![.NET Framework 4.62](https://img.shields.io/badge/.net-v4.62-yellow)](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net462)
+[![.NET 6.0](https://img.shields.io/badge/.net-v6.0-orange)](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+
 Restub is a framework for implementing REST API clients with built-in tracing.  
 Uses RestSharp library and Newtonsoft.Json serializer behind the scenes.
 
