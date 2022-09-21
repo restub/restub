@@ -122,5 +122,91 @@ namespace Restub.Tests.Pochta.Otpravka
             Assert.That(address.StreetGuid, Is.EqualTo("757b544e-3c93-424c-b717-6f9813f123a9"));
             Assert.That(address.OriginalAddress, Is.EqualTo("ул. Мясницкая, д. 26, г. Москва"));
         }
+
+        [Test]
+        public void OtpravkaFullNameCleanup()
+        {
+            var person = Client.CleanFullName("Христофор Бонифатиевич Врунгель");
+            Assert.That(person, Is.Not.Null);
+            Assert.That(person.QualityCode, Is.EqualTo("NOT_SURE"));
+            Assert.That(person.OriginalFullName, Is.EqualTo("Христофор Бонифатиевич Врунгель"));
+            Assert.That(person.Name, Is.EqualTo("Христофор"));
+            Assert.That(person.MiddleName, Is.EqualTo("Бонифатиевич"));
+            Assert.That(person.Surname, Is.EqualTo("Врунгель"));
+
+            person = Client.CleanFullName("Иван Рылов");
+            Assert.That(person, Is.Not.Null);
+            Assert.That(person.QualityCode, Is.EqualTo("NOT_SURE"));
+            Assert.That(person.OriginalFullName, Is.EqualTo("Иван Рылов"));
+            Assert.That(person.Name, Is.EqualTo("Иван"));
+            Assert.That(person.MiddleName, Is.Null);
+            Assert.That(person.Surname, Is.EqualTo("Рылов"));
+
+            person = Client.CleanFullName("Иванка Петкова");
+            Assert.That(person, Is.Not.Null);
+            Assert.That(person.QualityCode, Is.EqualTo("NOT_SURE"));
+            Assert.That(person.OriginalFullName, Is.EqualTo("Иванка Петкова"));
+            Assert.That(person.Name, Is.EqualTo("Иванка"));
+            Assert.That(person.MiddleName, Is.Null);
+            Assert.That(person.Surname, Is.EqualTo("Петкова"));
+
+            person = Client.CleanFullName("Марфа Васильевна");
+            Assert.That(person, Is.Not.Null);
+            Assert.That(person.QualityCode, Is.EqualTo("NOT_SURE"));
+            Assert.That(person.OriginalFullName, Is.EqualTo("Марфа Васильевна"));
+            Assert.That(person.Name, Is.EqualTo("Марфа"));
+            Assert.That(person.MiddleName, Is.EqualTo("Васильевна"));
+            Assert.That(person.Surname, Is.Null);
+        }
+
+        [Test]
+        public void OtpravkaFullNameBatchCleanup()
+        {
+            var people = Client.CleanFullName("Христофор Бонифатьевич Врунгель", "Иван Рылов",
+                "Иванка Петкова", "Марфа Васильевна", "Достоевский Константин Константинович");
+
+            Assert.That(people, Is.Not.Null.Or.Empty);
+            Assert.That(people.Length, Is.EqualTo(5));
+
+            var person = people[0];
+            Assert.That(person, Is.Not.Null);
+            Assert.That(person.QualityCode, Is.EqualTo("NOT_SURE"));
+            Assert.That(person.OriginalFullName, Is.EqualTo("Христофор Бонифатьевич Врунгель"));
+            Assert.That(person.Name, Is.EqualTo("Христофор"));
+            Assert.That(person.MiddleName, Is.EqualTo("Бонифатьевич"));
+            Assert.That(person.Surname, Is.EqualTo("Врунгель"));
+
+            person = people[1];
+            Assert.That(person, Is.Not.Null);
+            Assert.That(person.QualityCode, Is.EqualTo("NOT_SURE"));
+            Assert.That(person.OriginalFullName, Is.EqualTo("Иван Рылов"));
+            Assert.That(person.Name, Is.EqualTo("Иван"));
+            Assert.That(person.MiddleName, Is.Null);
+            Assert.That(person.Surname, Is.EqualTo("Рылов"));
+
+            person = people[2];
+            Assert.That(person, Is.Not.Null);
+            Assert.That(person.QualityCode, Is.EqualTo("NOT_SURE"));
+            Assert.That(person.OriginalFullName, Is.EqualTo("Иванка Петкова"));
+            Assert.That(person.Name, Is.EqualTo("Иванка"));
+            Assert.That(person.MiddleName, Is.Null);
+            Assert.That(person.Surname, Is.EqualTo("Петкова"));
+
+            person = people[3];
+            Assert.That(person, Is.Not.Null);
+            Assert.That(person.QualityCode, Is.EqualTo("NOT_SURE"));
+            Assert.That(person.OriginalFullName, Is.EqualTo("Марфа Васильевна"));
+            Assert.That(person.Name, Is.EqualTo("Марфа"));
+            Assert.That(person.MiddleName, Is.EqualTo("Васильевна"));
+            Assert.That(person.Surname, Is.Null);
+
+            person = people[4];
+            Assert.That(person, Is.Not.Null);
+            Assert.That(person.QualityCode, Is.EqualTo("EDITED"));
+            Assert.That(person.OriginalFullName, Is.EqualTo("Достоевский Константин Константинович"));
+            Assert.That(person.Name, Is.EqualTo("Константин"));
+            Assert.That(person.MiddleName, Is.EqualTo("Константинович"));
+            Assert.That(person.Surname, Is.EqualTo("Достоевский"));
+        }
     }
 }

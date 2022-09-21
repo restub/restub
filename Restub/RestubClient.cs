@@ -19,7 +19,7 @@ namespace Restub
         /// </summary>
         /// <param name="baseUrl">Base API endpoint.</param>
         /// <param name="credentials">Credentials.</param>
-        public RestubClient(string baseUrl, Credentials credentials)
+        public RestubClient(string baseUrl, Credentials credentials = null)
             : this(new RestClient(baseUrl), credentials)
         {
         }

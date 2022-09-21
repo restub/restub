@@ -16,7 +16,7 @@ namespace Restub.Tests.Pochta.Otpravka
         {
             Headers["Authorization"] = $"AccessToken {authToken.AccessToken}";
             Headers["X-User-Authorization"] = $"Basic {authToken.AuthorizationKey}";
-            Headers["Content-Type"] = "application/json;charset=UTF-8";
+            //Headers["Content-Type"] = "application/json;charset=UTF-8";
         }
 
         public override void Authenticate(IRestClient client, IRestRequest request)
