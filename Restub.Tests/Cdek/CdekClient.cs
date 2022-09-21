@@ -66,11 +66,12 @@ namespace Restub.Tests.Cdek
         /// EN: https://api-docs.cdek.ru/33829473.html
         /// RU: https://api-docs.cdek.ru/33829437.html
         /// </summary>
-        public CdekCity[] GetCities(string[] countries = null, string city = null) =>
+        public CdekCity[] GetCities(string[] countries = null, string city = null, int? size = null) =>
             Get<CdekCity[]>("location/cities", r => r.AddQueryString(new
             {
                 city,
                 country_codes = countries,
+                size,
             }));
     }
 }

@@ -51,6 +51,7 @@ namespace Restub.Tests.Pochta
 
             var result = Post<OtpravkaAddress[]>("/1.0/clean/address", req.ToArray());
 
+            // make sure that normalized addresses are returned in the same order
             return result.OrderBy(a => Convert.ToInt32(a.ID)).ToArray();
         }
     }

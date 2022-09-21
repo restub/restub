@@ -45,16 +45,16 @@ namespace Restub.Tests.Cdek
         [Test]
         public void CdekClientReturnsCities()
         {
-            var cities = CdekClient.GetCities(new[] { "ru", "en" });
+            var cities = CdekClient.GetCities(new[] { "ru", "en" }, size: 3);
             Assert.That(cities, Is.Not.Null.Or.Empty);
 
-            cities = CdekClient.GetCities(city: "москва");
+            cities = CdekClient.GetCities(city: "Гороховец");
             Assert.That(cities, Is.Not.Null.Or.Empty);
             Assert.That(cities.First(), Is.Not.Null.Or.Empty);
 
             var city = cities.First();
-            Assert.That(city.City, Is.EqualTo("Москва"));
-            Assert.That(city.Code, Is.EqualTo(44));
+            Assert.That(city.City, Is.EqualTo("Гороховец"));
+            Assert.That(city.Code, Is.EqualTo(1143104));
         }
     }
 }
