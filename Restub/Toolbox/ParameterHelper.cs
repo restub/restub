@@ -17,7 +17,7 @@ namespace Restub.Toolbox
         /// </summary>
         /// <param name="request">Request to populate parameters.</param>
         /// <param name="dataContract">Data contract to get the parameters from.</param>
-        public static void AddQueryString(this IRestRequest request, object dataContract) =>
+        public static IRestRequest AddQueryString(this IRestRequest request, object dataContract) =>
             request.AddParameters(dataContract, ParameterType.QueryString);
 
         /// <summary>
