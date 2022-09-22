@@ -24,9 +24,31 @@ namespace Restub.Tests
             Assert.That(typeof(ParameterHelperTests).GetDefaultValue(), Is.EqualTo(default(ParameterHelperTests)));
         }
 
+        private enum EnumMemberValues
+        {
+            [EnumMember(Value = "one")]
+            One,
+
+            [EnumMember(Value = "2")]
+            Two,
+        }
+
+        [Test]
+        public void EnumMemberValueTests()
+        {
+            string str<T>(T enumMember) =>
+                ParameterHelper.GetEnumMemberValue(enumMember);
+
+            // default string representation is the same as ToString()
+            Assert.That(str(DayOfWeek.Friday), Is.EqualTo(nameof(DayOfWeek.Friday)));
+            Assert.That(str(EnumMemberValues.One), Is.EqualTo("one"));
+            Assert.That(str(EnumMemberValues.Two), Is.EqualTo("2"));
+        }
+
         private class StubRequest : StubRequestBase
         {
-            public Dictionary<string, Tuple<object, ParameterType>> Params { get; } = new Dictionary<string, Tuple<object, ParameterType>>();
+            public Dictionary<string, Tuple<object, ParameterType>> Params { get; } =
+                new Dictionary<string, Tuple<object, ParameterType>>();
 
             public override IRestRequest AddParameter(string name, object value, ParameterType type)
             {
@@ -127,26 +149,38 @@ namespace Restub.Tests
             Assert.That(typeof(DayOfWeek?).GetNonNullableType(), Is.EqualTo(typeof(DayOfWeek)));
         }
 
+        private enum Lang
+        {
+            [EnumMember(Value = "rus")]
+            Rus,
+
+            [EnumMember(Value = "zho")]
+            Zho,
+
+            [EnumMember(Value = "eng")]
+            Eng,
+        }
+
         [Test]
         public void EnumParameters()
         {
-            //var req = new StubRequest();
-            //req.AddParameters(new { lang = Lang.Zho }, ParameterType.HttpHeader);
-            //Assert.That(req.Params.Count, Is.EqualTo(1));
-            //Assert.That(req.Params["lang"], Is.EqualTo(Tuple.Create("zho", ParameterType.HttpHeader)));
+            var req = new StubRequest();
+            req.AddParameters(new { lang = Lang.Zho }, ParameterType.HttpHeader);
+            Assert.That(req.Params.Count, Is.EqualTo(1));
+            Assert.That(req.Params["lang"], Is.EqualTo(Tuple.Create("zho", ParameterType.HttpHeader)));
 
-            //req.AddParameters(new { lang = Lang.Rus }, ParameterType.QueryStringWithoutEncode);
-            //Assert.That(req.Params.Count, Is.EqualTo(1));
-            //Assert.That(req.Params["lang"], Is.EqualTo(Tuple.Create("rus", ParameterType.QueryStringWithoutEncode)));
+            req.AddParameters(new { lang = Lang.Rus }, ParameterType.QueryStringWithoutEncode);
+            Assert.That(req.Params.Count, Is.EqualTo(1));
+            Assert.That(req.Params["lang"], Is.EqualTo(Tuple.Create("rus", ParameterType.QueryStringWithoutEncode)));
 
-            //req.AddParameters(new { lang = (Lang?)Lang.Eng }, ParameterType.RequestBody);
-            //Assert.That(req.Params.Count, Is.EqualTo(1));
-            //Assert.That(req.Params["lang"], Is.EqualTo(Tuple.Create("eng", ParameterType.RequestBody)));
+            req.AddParameters(new { lang = (Lang?)Lang.Eng }, ParameterType.RequestBody);
+            Assert.That(req.Params.Count, Is.EqualTo(1));
+            Assert.That(req.Params["lang"], Is.EqualTo(Tuple.Create("eng", ParameterType.RequestBody)));
 
-            //// nullable value is ignored, the last value is kept
-            //req.AddParameters(new { lang = (Lang?)null }, ParameterType.RequestBody);
-            //Assert.That(req.Params.Count, Is.EqualTo(1));
-            //Assert.That(req.Params["lang"], Is.EqualTo(Tuple.Create("eng", ParameterType.RequestBody)));
+            // nullable value is ignored, the last value is kept
+            req.AddParameters(new { lang = (Lang?)null }, ParameterType.RequestBody);
+            Assert.That(req.Params.Count, Is.EqualTo(1));
+            Assert.That(req.Params["lang"], Is.EqualTo(Tuple.Create("eng", ParameterType.RequestBody)));
         }
     }
 }

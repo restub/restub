@@ -58,19 +58,7 @@ namespace Restub.Toolbox
                     // get enum value from DataMember attribute
                     if (isEnumValue)
                     {
-                        var valueName = Enum.GetName(nonNullableType, value);
-                        if (valueName == null)
-                        {
-                            valueName = value.ToString();
-                        }
-
-                        var field = nonNullableType.GetField(valueName);
-                        var enumMember = field?.GetCustomAttribute<EnumMemberAttribute>();
-                        if (enumMember != null)
-                        {
-                            valueName = enumMember.Value;
-                        }
-
+                        var valueName = GetEnumMemberValue(nonNullableType, value);
                         request.AddParameter(parameterName, valueName, type);
                         continue;
                     }
@@ -94,6 +82,39 @@ namespace Restub.Toolbox
             }
 
             return request;
+        }
+
+        /// <summary>
+        /// Returns the enumeration member value.
+        /// </summary>
+        /// <typeparam name="T">The type of the enumeration</typeparam>
+        /// <param name="enumValue">The value to inspect.</param>
+        /// <returns>String representation of the value.</returns>
+        public static string GetEnumMemberValue<T>(T enumValue) =>
+            GetEnumMemberValue(typeof(T), enumValue);
+
+        /// <summary>
+        /// Returns the enumeration member value.
+        /// </summary>
+        /// <param name="nonNullableType">The type of the enumeration</param>
+        /// <param name="value">The value to inspect.</param>
+        /// <returns>String representation of the value.</returns>
+        private static string GetEnumMemberValue(Type nonNullableType, object value)
+        {
+            var valueName = Enum.GetName(nonNullableType, value);
+            if (valueName == null)
+            {
+                valueName = value.ToString();
+            }
+
+            var field = nonNullableType.GetField(valueName);
+            var enumMember = field?.GetCustomAttribute<EnumMemberAttribute>();
+            if (enumMember != null)
+            {
+                valueName = enumMember.Value;
+            }
+
+            return valueName;
         }
 
         /// <summary>
