@@ -3,13 +3,18 @@
 namespace Restub.DataContracts
 {
     /// <summary>
-    /// Interface for REST responses containing error collections.
+    /// Interface for REST responses containing errors.
     /// </summary>
     public interface IHasErrors
     {
         /// <summary>
-        /// Gets the errors.
+        /// Gets the error message.
         /// </summary>
-        IEnumerable<Error> GetErrors();
+        bool HasErrors();
+
+        /// <summary>
+        /// Gets the error message.
+        /// </summary>
+        string GetErrorMessage();
     }
 }

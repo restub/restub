@@ -3,7 +3,7 @@
 namespace Restub.DataContracts
 {
     /// <summary>
-    /// Single error message and code.
+    /// Sample error message and code DTO.
     /// </summary>
     [DataContract]
     public class Error

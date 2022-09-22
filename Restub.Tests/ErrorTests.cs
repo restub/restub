@@ -45,8 +45,8 @@ namespace Restub.Tests
             {
                 var emptyResponse = Activator.CreateInstance(t) as IHasErrors;
                 Assert.That(emptyResponse, Is.Not.Null);
-                Assert.That(emptyResponse.GetErrors(), Is.Not.Null);
-                Assert.That(emptyResponse.GetErrors().Any(), Is.False);
+                Assert.That(emptyResponse.HasErrors(), Is.False);
+                Assert.That(emptyResponse.GetErrorMessage(), Is.Null.Or.Empty);
             }
         }
     }

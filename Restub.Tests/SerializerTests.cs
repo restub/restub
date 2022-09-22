@@ -9,17 +9,11 @@ namespace Restub.Tests
     [TestFixture]
     public class SerializerTests
     {
-        private string Serialize<T>(T dto)
-        {
-            var ss = new NewtonsoftSerializer();
-            return ss.Serialize(dto);
-        }
+        private NewtonsoftSerializer Ser { get; } = new NewtonsoftSerializer();
 
-        private T Deserialize<T>(string json, T _ = default(T))
-        {
-            var ss = new NewtonsoftSerializer();
-            return ss.Deserialize<T>(json);
-        }
+        private string Serialize<T>(T dto) => Ser.Serialize(dto);
+
+        private T Deserialize<T>(string json, T _ = default(T)) => Ser.Deserialize<T>(json);
 
         [Test]
         public void SerializationRoundtrip()
@@ -34,7 +28,7 @@ namespace Restub.Tests
 
             var json = Serialize(obj);
             Assert.That(json, Is.Not.Empty);
-            Assert.That(json, Is.EqualTo("{\"str\":\"string\",\"num\":123,\"dec\":456.78,\"date\":\"2022-08-11T13:06:00+0300\"}"));
+            Assert.That(json, Is.EqualTo("{\"str\":\"string\",\"num\":123,\"dec\":456.78,\"date\":\"2022-08-11T13:06:00+03:00\"}"));
 
             var des = Deserialize(json, obj);
             Assert.That(des, Is.Not.Null);
@@ -51,7 +45,7 @@ namespace Restub.Tests
             // note: time zone can be different, i.e. 2022-08-29T21:25:00+0300 or +0700 or whatever
             Assert.That(json, Does.StartWith("\"2022-08-29T21:25:00+"));
             Assert.That(json, Does.EndWith("00\""));
-            Assert.That(json, Does.Match("\"2022\\-08\\-29T21\\:25\\:00\\+\\d\\d00\""));
+            Assert.That(json, Does.Match("\"2022\\-08\\-29T21\\:25\\:00\\+\\d\\d\\:00\""));
 
             var des = Deserialize(json, date);
             Assert.That(des, Is.Not.Null);

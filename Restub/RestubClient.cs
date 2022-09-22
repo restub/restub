@@ -6,6 +6,7 @@ using System.Xml;
 using Restub.DataContracts;
 using Restub.Toolbox;
 using RestSharp;
+using RestSharp.Serialization;
 
 namespace Restub
 {
@@ -32,7 +33,7 @@ namespace Restub
         public RestubClient(IRestClient сlient, Credentials credentials)
         {
             Credentials = credentials;
-            Serializer = new NewtonsoftSerializer();
+            Serializer = CreateSerializer();
 
             // Set up REST client
             Client = сlient;
@@ -49,6 +50,13 @@ namespace Restub
         protected abstract Authenticator CreateAuthenticator();
 
         /// <summary>
+        /// Creates the serializer.
+        /// </summary>
+        /// <returns>Serializer for REST messages.</returns>
+        protected virtual IRestSerializer CreateSerializer() =>
+            new NewtonsoftSerializer();
+
+        /// <summary>
         /// Gets the REST API client.
         /// </summary>
         public IRestClient Client { get; }
@@ -61,7 +69,7 @@ namespace Restub
         /// <summary>
         /// Gets the serializer.
         /// </summary>
-        public NewtonsoftSerializer Serializer { get; }
+        public IRestSerializer Serializer { get; }
 
         private void PrepareRequest(IRestRequest request, string apiMethodName)
         {
@@ -84,7 +92,7 @@ namespace Restub
         protected virtual void ThrowOnFailure<T>(IRestResponse<T> response)
         {
             // if response is successful, but it has errors, treat is as failure
-            if (response.Data is IHasErrors hasErrors && hasErrors.GetErrors().Any())
+            if (response.Data is IHasErrors hasErrors && hasErrors.HasErrors())
             {
                 ThrowOnFailure(response, hasErrors);
                 return;
@@ -157,7 +165,7 @@ namespace Restub
         protected virtual void ThrowOnFailure(IRestResponse response, IHasErrors errorResponse)
         {
             // if a response has errors, treat it as a failure
-            if (errorResponse?.GetErrors()?.Any() ?? false)
+            if (errorResponse?.HasErrors() ?? false)
             {
                 var errorMessage = GetErrorMessage(errorResponse);
                 if (string.IsNullOrWhiteSpace(errorMessage))
@@ -180,9 +188,7 @@ namespace Restub
         }
 
         internal static string GetErrorMessage(IHasErrors errorResponse) =>
-            string.Join(". ", errorResponse?.GetErrors()?.Select(e => e.Message) ?? new[] { string.Empty }
-                .Distinct()
-                .Where(m => !string.IsNullOrWhiteSpace(m)));
+            errorResponse?.GetErrorMessage() ?? string.Empty;
 
         /// <summary>
         /// Executes the given request and checks the result.
