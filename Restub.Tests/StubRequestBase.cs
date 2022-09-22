@@ -11,7 +11,7 @@ namespace Restub.Tests
     public class StubRequestBase : IRestRequest
     {
         public bool AlwaysMultipartFormData { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public ISerializer JsonSerializer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public ISerializer JsonSerializer { get; set; }
         public IXmlSerializer XmlSerializer { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Action<Stream, IHttpResponse> AdvancedResponseWriter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public Action<Stream> ResponseWriter { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

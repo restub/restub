@@ -1,4 +1,5 @@
-﻿using Restub.Toolbox;
+﻿using RestSharp.Serialization;
+using Restub.Toolbox;
 
 namespace Restub.Tests.Cdek
 {
@@ -33,6 +34,9 @@ namespace Restub.Tests.Cdek
 
         protected override Authenticator CreateAuthenticator() =>
             new CdekAuthenticator(this, (CdekCredentials)Credentials);
+
+        protected override IRestSerializer CreateSerializer() =>
+            new CdekSerializer();
 
         /// <summary>
         /// Acquires a JWT token for the CDEK API.

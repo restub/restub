@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using RestSharp;
+using RestSharp.Serialization;
 
 namespace Restub.Toolbox
 {
@@ -12,6 +13,12 @@ namespace Restub.Toolbox
     /// </summary>
     public static class ParameterHelper
     {
+        /// <summary>
+        /// Default serializer to be used when a request doesn't have one.
+        /// </summary>
+        public static IRestSerializer DefaultSerializer { get; set; } =
+            new NewtonsoftSerializer();
+
         /// <summary>
         /// Adds all dataContract properties to the given request as QueryString parameters.
         /// </summary>
@@ -55,7 +62,7 @@ namespace Restub.Toolbox
                         continue;
                     }
 
-                    // get enum value from DataMember attribute
+                    // get enum value from EnumMember attribute
                     if (isEnumValue)
                     {
                         var valueName = GetEnumMemberValue(nonNullableType, value);
@@ -77,7 +84,10 @@ namespace Restub.Toolbox
                         continue;
                     }
 
-                    request.AddParameter(parameterName, value, type);
+                    // convert to string
+                    var serializer = request.JsonSerializer ?? DefaultSerializer;
+                    var stringValue = serializer.Serialize(value);
+                    request.AddParameter(parameterName, stringValue.Trim('"'), type);
                 }
             }
 

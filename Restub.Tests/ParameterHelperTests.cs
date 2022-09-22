@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Restub.Toolbox;
 using NUnit.Framework;
 using RestSharp;
+using Newtonsoft.Json;
 
 namespace Restub.Tests
 {
@@ -94,11 +95,49 @@ namespace Restub.Tests
         public void SimpleParameters()
         {
             var req = new StubRequest();
+            req.JsonSerializer = new NewtonsoftSerializer();
+
             req.AddParameters(new Request { String = "test", Int = 32 }, ParameterType.QueryString);
             Assert.That(req.Params.Count, Is.EqualTo(3));
             Assert.That(req.Params["string"], Is.EqualTo(Tuple.Create("test", ParameterType.QueryString)));
             Assert.That(req.Params["int"], Is.EqualTo(Tuple.Create(32, ParameterType.QueryString)));
             Assert.That(req.Params["important"], Is.EqualTo(Tuple.Create(false, ParameterType.QueryString)));
+
+            req.AddParameters(new { Date = new DateTimeOffset(2022, 12, 31, 0, 0, 0, TimeSpan.Zero) }, ParameterType.QueryString);
+            Assert.That(req.Params["Date"], Is.EqualTo(Tuple.Create("2022-12-31T00:00:00+00:00", ParameterType.QueryString)));
+        }
+
+        [DataContract]
+        public class DateRequest
+        {
+            [DataMember(Name = "sd")]
+            public DateTimeOffset SimpleDate { get; set; }
+
+            // Currently not supported:
+            //[DataMember(Name = "do"), JsonConverter(typeof(DateOnlyConverter))]
+            //public DateTimeOffset DateOnly { get; set; }
+            //[DataMember(Name = "to"), JsonConverter(typeof(TimeOnlyConverter))]
+            //public DateTimeOffset TimeOnly { get; set; }
+        }
+
+        [Test]
+        public void DateParameters()
+        {
+            var req = new StubRequest();
+            req.JsonSerializer = new NewtonsoftSerializer();
+
+            var date = new DateTimeOffset(2022, 09, 23, 1, 15, 20, TimeSpan.FromHours(7));
+            req.AddParameters(new DateRequest
+            {
+                SimpleDate = date, 
+                //DateOnly = date,
+                //TimeOnly = date,
+            }, ParameterType.QueryString);
+
+            Assert.That(req.Params.Count, Is.EqualTo(1));
+            Assert.That(req.Params["sd"], Is.EqualTo(Tuple.Create("2022-09-23T01:15:20+07:00", ParameterType.QueryString)));
+            //Assert.That(req.Params["do"], Is.EqualTo(Tuple.Create("2022-09-23", ParameterType.QueryString)));
+            //Assert.That(req.Params["to"], Is.EqualTo(Tuple.Create("01:15", ParameterType.QueryString)));
         }
 
         [Test]

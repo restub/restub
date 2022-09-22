@@ -57,18 +57,27 @@ namespace Restub.Tests
         {
             [DataMember(Name = "d"), JsonConverter(typeof(DateOnlyConverter))]
             public DateTime Date { get; set; }
+
+            [DataMember(Name = "t"), JsonConverter(typeof(TimeOnlyConverter))]
+            public DateTime Time { get; set; }
         }
 
         [Test]
         public void DateNoTimeSerialization()
         {
-            var obj = new NoTime { Date = new DateTime(2022, 08, 11) };
+            var obj = new NoTime
+            {
+                Date = new DateTime(2022, 08, 11),
+                Time = new DateTime(1, 1, 1, 12, 34, 00),
+            };
+
             var json = Serialize(obj);
-            Assert.That(json, Is.EqualTo("{\"d\":\"2022-08-11\"}"));
+            Assert.That(json, Is.EqualTo("{\"d\":\"2022-08-11\",\"t\":\"12:34\"}"));
 
             var date = Deserialize<NoTime>(json);
             Assert.That(date, Is.Not.Null);
             Assert.That(date.Date, Is.EqualTo(new DateTime(2022, 08, 11)));
+            Assert.That(date.Time.TimeOfDay, Is.EqualTo(new TimeSpan(12, 34, 00)));
         }
 
         [Test]
