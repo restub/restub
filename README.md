@@ -11,15 +11,18 @@ Uses RestSharp library and Newtonsoft.Json serializer behind the scenes.
 
 # Getting started
 
-TODO
+* Install restub Nuget package: https://www.nuget.org/packages/restub
+* Add request and response classes used by your REST API server
+* Subclass `RestubClient`, add REST API methods
+* Implement authentication by subclassing `Authenticator`, if applicable
 
 ## Sample REST client usage
 
 ```c#
-// connect to sandbox API
+// connect to CDEK API
 var client = new CdekClient();
 
-// trace all API calls to console
+// trace all API calls to the console
 client.Tracer = Console.WriteLine;
 
 // get 10 regions
