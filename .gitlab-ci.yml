@@ -18,6 +18,7 @@ unit_tests:
   script:
     # building again the solution
     - dotnet test Restub.sln --logger "trx;LogFileName=TestResults.trx"
+  after_script:
     - echo Converting test results
     - trx2junit Restub.Tests\TestResults\TestResults.trx
   artifacts:
