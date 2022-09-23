@@ -6,7 +6,7 @@ stages:
 build:
   stage: build
   script:
-    - dotnet build Exprest.sln
+    - dotnet build Restub.sln
 
 unit_tests:
   stage: unit tests
@@ -17,22 +17,22 @@ unit_tests:
     # dotnet tool install -g trx2junit
   script:
     # building again the solution
-    - dotnet test Exprest.sln --logger "trx;LogFileName=TestResults.trx"
+    - dotnet test Restub.sln --logger "trx;LogFileName=TestResults.trx"
     - echo Converting test results
-    - trx2junit Exprest.Tests\TestResults\TestResults.trx
+    - trx2junit Restub.Tests\TestResults\TestResults.trx
   artifacts:
     paths:
-      - Exprest.Tests\TestResults\TestResults.trx
+      - Restub.Tests\TestResults\TestResults.trx
     reports:
       junit:
-        - Exprest.Tests\TestResults\TestResults.xml
+        - Restub.Tests\TestResults\TestResults.xml
     expire_in: 1 day
 
 publish:
   stage: publish
   script:
-    - dotnet pack -c Release Exprest.sln
+    - dotnet pack -c Release Restub.sln
   artifacts:
     paths:
-      - Exprest\bin\Release\*.nupkg
-      - Exprest\bin\Release\*.snupkg
+      - Restub\bin\Release\*.nupkg
+      - Restub\bin\Release\*.snupkg
