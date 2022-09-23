@@ -14,12 +14,12 @@ namespace Restub.Tests
     {
         static TestBase()
         {
-            // debugging
-            var vars = Environment.GetEnvironmentVariables().OfType<Pair>();
-            foreach (var var in vars.OrderBy(v => v.Key))
-            {
-                TestContext.Progress.WriteLine($"{var.Key} = {var.Value}");
-            }
+            // // debugging
+            // var vars = Environment.GetEnvironmentVariables().OfType<Pair>();
+            // foreach (var var in vars.OrderBy(v => v.Key))
+            // {
+            //    TestContext.Progress.WriteLine($"{var.Key} = {var.Value}");
+            // }
 
             if (string.IsNullOrEmpty(Env("TEST_ENVIRONMENT_INITIALIZED")))
             {
