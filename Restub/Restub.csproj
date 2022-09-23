@@ -9,12 +9,12 @@
     <Copyright>Alexey Yakovlev</Copyright>
     <Company>https://github.com/yallie</Company>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <PackageId>Exprest</PackageId>
-    <PackageProjectUrl>https://github.com/exprest</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/exprest</RepositoryUrl>
-    <PackageTags>rest; api; framework</PackageTags>
-    <Title>exprest</Title>
-    <Description>Express framework for building REST API clients based on RestSharp.</Description>
+    <PackageId>restub</PackageId>
+    <PackageProjectUrl>https://github.com/restub/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/restub/restub</RepositoryUrl>
+    <PackageTags>rest; api; stub; client; framework; tracing; logging</PackageTags>
+    <Title>restub</Title>
+    <Description>stub framework for building REST API clients based on RestSharp and Newtonsoft.Json.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
