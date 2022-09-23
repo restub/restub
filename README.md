@@ -141,3 +141,4 @@ Each library build can be traced back to the original git commit.
 7. Push tags as suggested by nbgv tool: `git push origin v1.0.7`
 8. Go to github project page and create a release out of the last tag v1.0.7.
 9. Verify that github workflow for publishing the nuget package has completed.
+10. Switch back to master and merge the release branch.
