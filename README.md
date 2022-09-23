@@ -11,40 +11,62 @@ Uses RestSharp library and Newtonsoft.Json serializer behind the scenes.
 
 # Getting started
 
-* Install restub Nuget package: https://www.nuget.org/packages/restub
-* Add request and response classes used by your REST API server
+* Add the Nuget package: https://www.nuget.org/packages/restub
+* Implement request and response classes used by your REST API server
 * Subclass `RestubClient`, add REST API methods
-* Implement authentication by subclassing `Authenticator`, if applicable
+* Implement authentication by subclassing `Authenticator`, if needed
+
+## Sample REST client
+
+```c#
+public class GithubClient : RestubClient
+{
+  public GithubClient() : base("https://api.github.com/")
+  { 
+  }
+
+  public GithubOrg[] GetUserOrgs(string user) =>
+    Get<GithubOrg[]>("users/{u}/orgs", r => r.AddUrlSegment("u", user));
+}
+```
+
+## Sample DTO class
+
+```c#
+public class GithubOrg
+{
+  public int ID { get; set; }
+  public string Url { get; set; }
+  public string Login { get; set; }
+  public string Description { get; set; }
+}
+```
 
 ## Sample REST client usage
 
 ```c#
-// connect to CDEK API
-var client = new CdekClient();
+// connect to Github API
+var client = new GithubClient();
 
 // trace all API calls to the console
 client.Tracer = Console.WriteLine;
 
-// get 10 regions
-var regions = client.GetRegions(size: 10);
-
-// get all Russian and Chinese cities
-var cities = client.GetCities(new[] { "ru", "cn" });
+// get user's organizations
+var orgs = client.GetUserOrgs("yallie");
 ```
 
-## Sample REST client implementation
+## Advantages
 
-```c#
-public CdekRegion[] GetRegions(int? size = null, int? page = null) =>
-  Get<CdekRegion[]>("location/regions", r => r.AddQueryString(new { size, page }));
+* Get a full-featured REST API client with just a few lines of code
+* Enable built-in tracing with a single line of code
+* Use unannotated POCO classes for requests and responses
+* Implement Authenticator if your API requires authentication
+* Supports .NET 4.6.2 and .NET 6.0 frameworks
 
-public CdekCity[] GetCities(string[] countries = null, string city = null) =>
-  Get<CdekCity[]>("location/cities", r => r.AddQueryString(new
-  {
-    city,
-    country_codes = countries,
-  }));
-```
+## Disadvantages
+
+* No async support as of now (planned for the future versions)
+* Depends on RestSharp and Newtonsoft.Json libraries.
 
 <details>
   <summary>A typical trace log looks like this:</summary>
@@ -125,7 +147,7 @@ body: {
 ```
 </details>
 
-# SDK versioning
+# restub versioning
 
 The project uses [Nerdbank.GitVersioning](https://github.com/dotnet/Nerdbank.GitVersioning) tool to manage versions.  
 Each library build can be traced back to the original git commit.

@@ -46,8 +46,8 @@ namespace Restub
         /// <summary>
         /// When overridden in the derived class, creates the authenticator.
         /// </summary>
-        /// <returns>Authenticator for REST request.</returns>
-        protected abstract Authenticator CreateAuthenticator();
+        /// <returns>Authenticator for REST requests, or null.</returns>
+        protected virtual Authenticator CreateAuthenticator() => null;
 
         /// <summary>
         /// Creates the serializer.
