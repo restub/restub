@@ -9,20 +9,28 @@
     <Copyright>Alexey Yakovlev</Copyright>
     <Company>https://github.com/yallie</Company>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <PackageId>Exprest</PackageId>
-    <PackageProjectUrl>https://github.com/exprest</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/exprest</RepositoryUrl>
-    <PackageTags>rest; api; framework</PackageTags>
-    <Title>exprest</Title>
-    <Description>Express framework for building REST API clients based on RestSharp.</Description>
+    <PackageId>restub</PackageId>
+    <PackageProjectUrl>https://github.com/restub/</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/restub/restub.git</RepositoryUrl>
+    <PackageTags>rest; api; stub; client; framework; tracing; logging</PackageTags>
+    <PackageIcon>restub.png</PackageIcon>
+    <Title>restub</Title>
+    <Description>stub framework for building REST API clients based on RestSharp and Newtonsoft.Json.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReleaseNotes>Initial beta release.
+    </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="RestSharp" Version="106.15.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\restub.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

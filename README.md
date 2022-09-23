@@ -4,21 +4,25 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/restub/restub/badge)](https://www.codefactor.io/repository/github/restub/restub)
 [![.NET Framework 4.62](https://img.shields.io/badge/.net-v4.62-yellow)](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net462)
 [![.NET 6.0](https://img.shields.io/badge/.net-v6.0-orange)](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+[![NuGet](https://img.shields.io/nuget/v/restub.svg)](https://nuget.org/packages/restub)
 
 restub is a stub framework for implementing REST API clients with built-in tracing.  
 Uses RestSharp library and Newtonsoft.Json serializer behind the scenes.
 
 # Getting started
 
-TODO
+* Install restub Nuget package: https://www.nuget.org/packages/restub
+* Add request and response classes used by your REST API server
+* Subclass `RestubClient`, add REST API methods
+* Implement authentication by subclassing `Authenticator`, if applicable
 
 ## Sample REST client usage
 
 ```c#
-// connect to sandbox API
+// connect to CDEK API
 var client = new CdekClient();
 
-// trace all API calls to console
+// trace all API calls to the console
 client.Tracer = Console.WriteLine;
 
 // get 10 regions
