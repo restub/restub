@@ -57,6 +57,12 @@ namespace Restub
             new NewtonsoftSerializer();
 
         /// <summary>
+        /// Gets the library name.
+        /// </summary>
+        public virtual string LibraryName =>
+            $"restub v{typeof(RestubClient).GetAssemblyVersion()}";
+
+        /// <summary>
         /// Gets the REST API client.
         /// </summary>
         public IRestClient Client { get; }
@@ -76,10 +82,8 @@ namespace Restub
             // use request parameters to store additional properties, not really used by the requests
             request.AddParameter(ApiTimestampParameterName, DateTime.Now.Ticks, ParameterType.UrlSegment);
             request.AddParameter(ApiTickCountParameterName, Environment.TickCount.ToString(), ParameterType.UrlSegment);
-            if (!string.IsNullOrWhiteSpace(apiMethodName))
-            {
-                request.AddHeader(ApiMethodNameHeaderName, apiMethodName);
-            }
+            request.AddHeaderIfNotEmpty(ApiClientNameHeaderName, LibraryName);
+            request.AddHeaderIfNotEmpty(ApiMethodNameHeaderName, apiMethodName);
 
             // trace requests and responses
             if (Tracer != null)

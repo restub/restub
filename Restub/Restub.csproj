@@ -16,7 +16,7 @@
     <PackageTags>rest; api; stub; client; framework; tracing; logging</PackageTags>
     <PackageIcon>restub.png</PackageIcon>
     <Title>restub</Title>
-    <Description>stub framework for building REST API clients based on RestSharp and Newtonsoft.Json.</Description>
+    <Description>Build your traceable REST API client with a few lines of code.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>

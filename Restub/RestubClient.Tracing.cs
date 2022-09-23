@@ -13,6 +13,7 @@ namespace Restub
     /// </remarks>
     public partial class RestubClient
     {
+        private const string ApiClientNameHeaderName = "X-ApiClientName";
         private const string ApiMethodNameHeaderName = "X-ApiMethodName";
         private const string ApiTimestampParameterName = "X-ApiTimestamp";
         private const string ApiTickCountParameterName = "X-ApiTickCount";
@@ -21,17 +22,6 @@ namespace Restub
         /// Tracer function, such as <see cref="Console.WriteLine(string, object[])"/>.
         /// </summary>
         public Action<string, object[]> Tracer { get; set; }
-
-        private void Trace(string format, params object[] arguments)
-        {
-            var tracer = Tracer;
-            if (tracer != null)
-            {
-                tracer(format, arguments);
-            }
-        }
-
-        private JsonSerializer Json = new JsonSerializer();
 
         private static string CR = Environment.NewLine;
 

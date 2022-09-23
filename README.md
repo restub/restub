@@ -6,15 +6,20 @@
 [![.NET 6.0](https://img.shields.io/badge/.net-v6.0-orange)](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 [![NuGet](https://img.shields.io/nuget/v/restub.svg)](https://nuget.org/packages/restub)
 
+Build your traceable REST API client with a few lines of code.
+
+# Welcome
+
 restub is a stub framework for implementing REST API clients with built-in tracing.  
+Trace log contains all requests, responses, headers, parameters, error codes and timings.  
 Uses RestSharp library and Newtonsoft.Json serializer behind the scenes.
 
-# Getting started
+## Getting started
 
 * Add the Nuget package: https://www.nuget.org/packages/restub
-* Implement request and response classes used by your REST API server
+* Implement request and response classes used by your REST API service
 * Subclass `RestubClient`, add REST API methods
-* Implement authentication by subclassing `Authenticator`, if needed
+* Add authentication support by subclassing `Authenticator`, if needed
 
 ## Sample REST client
 
@@ -59,6 +64,7 @@ var orgs = client.GetUserOrgs("yallie");
 
 * Get a full-featured REST API client with just a few lines of code
 * Enable built-in tracing with a single line of code
+* Explore API calls logs within your IDE while running the unit tests
 * Use unannotated POCO classes for requests and responses
 * Implement Authenticator if your API requires authentication
 * Supports .NET 4.6.2 and .NET 6.0 frameworks
@@ -75,6 +81,7 @@ var orgs = client.GetUserOrgs("yallie");
 // GetAuthToken
 -> POST https://api.edu.cdek.ru/v2/oauth/token?parameters
 headers: {
+  X-ApiClientName = restub v0.1.6.37278
   X-ApiMethodName = GetAuthToken
   Accept = application/json, text/json, text/x-json, text/javascript, application/xml, text/xml
   Content-type = application/json
@@ -83,8 +90,8 @@ body: null
 
 <- OK 200 (OK) https://api.edu.cdek.ru/v2/oauth/token?parameters
 timings: {
-  started: 2022-08-31 15:30:57
-  elapsed: 0:00:00.812
+  started: 2022-09-23 19:51:16
+  elapsed: 0:00:00.719
 }
 headers: {
   Transfer-Encoding = chunked
@@ -98,43 +105,95 @@ headers: {
   Content-Encoding = 
   Cache-Control = no-store
   Content-Type = application/json;charset=utf-8
-  Date = Wed, 31 Aug 2022 12:30:59 GMT
+  Date = Fri, 23 Sep 2022 16:51:18 GMT
   Server = QRATOR
 }
 body: {
-  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI...8yToig",
+  "access_token": "eyJhbGciOiJSUzI1Ni....eq62ZCji34UPjozvWCUXv16ZvTA",
   "token_type": "bearer",
   "expires_in": 3599,
   "scope": "order:all payment:all",
-  "jti": "8d70741f-8776-411c-80f1-f870b608bc52"
+  "jti": "be19866f-0d95-4287-b1ff-cad84e113c3c"
 }
+
+// GetRegions
+-> GET https://api.edu.cdek.ru/v2/location/regions?size=3&page=2
+headers: {
+  X-ApiClientName = restub v0.1.6.37278
+  X-ApiMethodName = GetRegions
+  Authorization = Bearer eyJhbGciOiJSUzI1Ni....eq62ZCji34UPjozvWCUXv16ZvTA
+  Accept = application/json, text/json, text/x-json, text/javascript, application/xml, text/xml
+}
+
+<- OK 200 (OK) https://api.edu.cdek.ru/v2/location/regions?size=3&page=2
+timings: {
+  started: 2022-09-23 19:55:56
+  elapsed: 0:00:00.859
+}
+headers: {
+  Transfer-Encoding = chunked
+  Connection = keep-alive
+  Keep-Alive = timeout=15
+  Vary = Accept-Encoding
+  X-Content-Type-Options = nosniff
+  X-XSS-Protection = 1; mode=block
+  Pragma = no-cache
+  X-Frame-Options = DENY
+  Content-Encoding = 
+  Cache-Control = no-cache, no-store, max-age=0, must-revalidate
+  Content-Type = application/json
+  Date = Fri, 23 Sep 2022 16:55:58 GMT
+  Expires = 0
+  Server = QRATOR
+}
+body: [
+  {
+    "country_code": "FR",
+    "country": "Франция",
+    "region": "Марна",
+    "region_code": 590
+  },
+  {
+    "country_code": "JP",
+    "country": "Япония",
+    "region": "Фукусима",
+    "region_code": 855
+  },
+  {
+    "country_code": "FR",
+    "country": "Франция",
+    "region": "Ло и Гаронна",
+    "region_code": 560
+  }
+]
 
 // GetRegions
 -> GET https://api.edu.cdek.ru/v2/location/regions?page=3
 headers: {
+  X-ApiClientName = restub v0.1.6.37278
   X-ApiMethodName = GetRegions
-  Authorization = Bearer eyJhbGciOiJSUzI1NiIsInR5cCI...8yToig
+  Authorization = Bearer eyJhbGciOiJSUzI1Ni....eq62ZCji34UPjozvWCUXv16ZvTA
   Accept = application/json, text/json, text/x-json, text/javascript, application/xml, text/xml
 }
 
 <- ERROR 400 (BadRequest) https://api.edu.cdek.ru/v2/location/regions?page=3
 timings: {
-  started: 2022-09-17 02:51:56
-  elapsed: 0:00:00.063
+  started: 2022-09-23 19:51:17
+  elapsed: 0:00:00.078
 }
 headers: {
-  Server = QRATOR
-  Date = Fri, 16 Sep 2022 23:51:57 GMT
   Transfer-Encoding = chunked
   Connection = keep-alive
   Keep-Alive = timeout=15
   X-Content-Type-Options = nosniff
   X-XSS-Protection = 1; mode=block
-  Cache-Control = no-store, must-revalidate, no-cache, max-age=0
   Pragma = no-cache
   X-Frame-Options = DENY
+  Cache-Control = no-cache, no-store, max-age=0, must-revalidate
   Content-Type = application/json
+  Date = Fri, 23 Sep 2022 16:51:19 GMT
   Expires = 0
+  Server = QRATOR
 }
 body: {
   "errors": [
