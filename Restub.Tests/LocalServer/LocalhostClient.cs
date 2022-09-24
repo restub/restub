@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Restub.Tests.LocalServer
 {
@@ -14,7 +10,28 @@ namespace Restub.Tests.LocalServer
 
         public string Hello() => Get("/");
 
-        public LocalhostDummy PostDummy(string name, int size) =>
-            Post<LocalhostDummy>("/dummy", new LocalhostDummy { Name = name, Size = size });
+        public LocalhostPerson[] GetAllPeople() =>
+            Get<LocalhostPerson[]>("/api/people");
+
+        public LocalhostPerson GetPerson(int id) =>
+            Get<LocalhostPerson>("/api/people/{id}", r => r.AddUrlSegment("id", id));
+
+        public LocalhostPerson UpdatePerson(int id, string name, decimal size) =>
+            Put<LocalhostPerson>("/api/people/{id}", new LocalhostPerson
+            {
+                Name = name,
+                Size = size,
+            },
+            r => r.AddUrlSegment("id", id));
+
+        public LocalhostPerson AddPerson(string name, decimal size) =>
+            Post<LocalhostPerson>("/api/people/add", new LocalhostPerson
+            {
+                Name = name,
+                Size = size,
+            });
+
+        public LocalhostPerson DeletePerson(int id) =>
+            Delete<LocalhostPerson>("/api/people/{id}", null, r => r.AddUrlSegment("id", id));
     }
 }
