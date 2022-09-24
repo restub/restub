@@ -68,12 +68,12 @@ var orgs = client.GetUser("yallie");
 * Use unannotated POCO classes for requests and responses
 * Execute HTTP GET, POST, HEAD, PUT, PATCH, OPTIONS or DELETE requests
 * Implement Authenticator if your API requires authentication
-* Supports .NET 4.6.2 and .NET 6.0 frameworks
+* Supports synchronous and asynchronous request execution
+* Targets .NET 4.6.2 and .NET 6.0 frameworks
 
 ## Disadvantages
 
-* No async support as of now (planned for the future versions)
-* No support for XML serialization (currently not planned)
+* No support for XML serialization
 * Depends on RestSharp and Newtonsoft.Json libraries.
 
 <details>

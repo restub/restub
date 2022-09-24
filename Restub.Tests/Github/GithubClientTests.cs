@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Restub.Tests.Github
@@ -27,6 +28,29 @@ namespace Restub.Tests.Github
         public void GithubClientReturnsUsersOrganizations()
         {
             var orgs = Client.GetUserOrgs("yallie");
+            Assert.That(orgs, Is.Not.Null.Or.Empty);
+
+            var org = orgs.First(o => o.Login == "restub");
+            Assert.That(org, Is.Not.Null.Or.Empty);
+            Assert.That(org.Url, Is.EqualTo("https://api.github.com/orgs/restub"));
+        }
+
+        [Test]
+        public async Task GithubClientReturnsUserByNameAsync()
+        {
+            var user = await Client.GetUserAsync("yallie");
+            Assert.That(user, Is.Not.Null);
+
+            Assert.That(user.ID, Is.EqualTo(672878));
+            Assert.That(user.Login, Is.EqualTo("yallie"));
+            Assert.That(user.Name, Is.EqualTo("Alexey Yakovlev"));
+            Assert.That(user.Url, Is.EqualTo("https://api.github.com/users/yallie"));
+        }
+
+        [Test]
+        public async Task GithubClientReturnsUsersOrganizationsAsync()
+        {
+            var orgs = await Client.GetUserOrgsAsync("yallie");
             Assert.That(orgs, Is.Not.Null.Or.Empty);
 
             var org = orgs.First(o => o.Login == "restub");
