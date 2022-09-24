@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Restub.Tests.LocalServer
+﻿namespace Restub.Tests.LocalServer
 {
     public class LocalhostClient : RestubClient
     {
@@ -8,7 +6,7 @@ namespace Restub.Tests.LocalServer
         {
         }
 
-        public string Hello() => Get("/");
+        public string Hello() => Get<string>("/");
 
         public LocalhostPerson[] GetAllPeople() =>
             Get<LocalhostPerson[]>("/api/people");
@@ -18,6 +16,14 @@ namespace Restub.Tests.LocalServer
 
         public LocalhostPerson UpdatePerson(int id, string name, decimal size) =>
             Put<LocalhostPerson>("/api/people/{id}", new LocalhostPerson
+            {
+                Name = name,
+                Size = size,
+            },
+            r => r.AddUrlSegment("id", id));
+
+        public LocalhostPerson PatchPerson(int id, string name = null, decimal size = 0) =>
+            Patch<LocalhostPerson>("/api/people/{id}", new LocalhostPerson
             {
                 Name = name,
                 Size = size,

@@ -50,6 +50,21 @@ namespace Restub.Tests.LocalServer
             return Task.FromResult(person);
         }
 
+        [Route(HttpVerbs.Patch, "/people/{id}")]
+        public Task<LocalhostPerson> PatchPerson(int id, [JsonData] LocalhostPerson person)
+        {
+            var existingPerson = People.TryGetValue(id, out var p) ? p :
+                throw new HttpException(HttpStatusCode.NotFound);
+
+            existingPerson.Name = person.Name ?? existingPerson.Name;
+            if (person.Size != 0)
+            {
+                existingPerson.Size = person.Size;
+            }
+
+            return Task.FromResult(existingPerson);
+        }
+
         [Route(HttpVerbs.Post, "/people/add")]
         public Task<LocalhostPerson> AddPerson([JsonData] LocalhostPerson person)
         {

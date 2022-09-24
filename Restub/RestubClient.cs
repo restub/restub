@@ -199,32 +199,73 @@ namespace Restub
         /// </summary>
         /// <typeparam name="T">Response type.</typeparam>
         /// <param name="request">The request to execute.</param>
+        /// <param name="body">Optional request body.</param>
+        /// <param name="initRequest">IRestRequest initialization callback.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        internal T Execute<T>(IRestRequest request, [CallerMemberName] string apiMethodName = null)
+        internal T Execute<T>(IRestRequest request, object body = null,
+            Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
         {
+            AddRequestBody(request, body);
+            initRequest?.Invoke(request);
             PrepareRequest(request, apiMethodName);
-            var response = Client.Execute<T>(request);
 
-            // handle REST exceptions
-            ThrowOnFailure(response);
-            return response.Data;
+            // special treatment for the string requests
+            if (typeof(T) == typeof(string))
+            {
+                var response = Client.Execute(request);
+
+                // there is no body deserialization step, so we need to trace explicitly
+                Trace(response);
+                ThrowOnFailure(response);
+                return (T)(object)response.Content;
+            }
+            else
+            {
+                var response = Client.Execute<T>(request);
+
+                // handle REST exceptions
+                ThrowOnFailure(response);
+                return response.Data;
+            }
+        }
+
+        private void AddRequestBody(IRestRequest request, object body)
+        {
+            if (request == null || body == null)
+            {
+                return;
+            }
+
+            // TODO: check if RestSharp itself already handles string bodies
+            if (body is string strBody)
+            {
+                var contentType = "application/json";
+                if (request.RequestFormat == DataFormat.Xml)
+                {
+                    contentType = "application/xml";
+                }
+                else if (request.RequestFormat != DataFormat.Json)
+                {
+                    contentType = "text/plain";
+                }
+
+                request.AddParameter(string.Empty, strBody, contentType, ParameterType.RequestBody);
+            }
+            else
+            {
+                request.AddJsonBody(body);
+            }
         }
 
         /// <summary>
-        /// Executes the given request and checks the result.
+        /// Performs DELETE request.
         /// </summary>
-        /// <param name="request">The request to execute.</param>
+        /// <param name="url">Resource url.</param>
+        /// <param name="body">Request body, to be serialized as JSON or added as is if it's a string.</param>
+        /// <param name="initRequest">IRestRequest initialization.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        internal string Execute(IRestRequest request, [CallerMemberName] string apiMethodName = null)
-        {
-            PrepareRequest(request, apiMethodName);
-            var response = Client.Execute(request);
-
-            // there is no body deserialization step, so we need to trace
-            Trace(response);
-            ThrowOnFailure(response);
-            return response.Content;
-        }
+        public T Delete<T>(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null) =>
+            Execute<T>(new RestRequest(url, Method.DELETE, DataFormat.Json), body, initRequest, apiMethodName);
 
         /// <summary>
         /// Performs GET request.
@@ -233,139 +274,60 @@ namespace Restub
         /// <param name="url">Resource url.</param>
         /// <param name="initRequest">IRestRequest initialization.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public T Get<T>(string url, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
-        {
-            var request = new RestRequest(url, Method.GET, DataFormat.Json);
-            initRequest?.Invoke(request);
-            return Execute<T>(request, apiMethodName);
-        }
+        public T Get<T>(string url, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null) =>
+            Execute<T>(new RestRequest(url, Method.GET, DataFormat.Json), null, initRequest, apiMethodName);
 
         /// <summary>
-        /// Performs GET request and returns a string.
+        /// Performs HEAD request.
         /// </summary>
+        /// <typeparam name="T">Response type.</typeparam>
         /// <param name="url">Resource url.</param>
         /// <param name="initRequest">IRestRequest initialization.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public string Get(string url, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
-        {
-            var request = new RestRequest(url, Method.GET, DataFormat.Json);
-            initRequest?.Invoke(request);
-            return Execute(request, apiMethodName);
-        }
+        public T Head<T>(string url, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null) =>
+            Execute<T>(new RestRequest(url, Method.HEAD, DataFormat.Json), null, initRequest, apiMethodName);
+
+        /// <summary>
+        /// Performs OPTIONS request.
+        /// </summary>
+        /// <typeparam name="T">Response type.</typeparam>
+        /// <param name="url">Resource url.</param>
+        /// <param name="initRequest">IRestRequest initialization.</param>
+        /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
+        public T Options<T>(string url, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null) =>
+            Execute<T>(new RestRequest(url, Method.OPTIONS, DataFormat.Json), null, initRequest, apiMethodName);
+
+        /// <summary>
+        /// Performs PATCH request.
+        /// </summary>
+        /// <typeparam name="T">Response type.</typeparam>
+        /// <param name="url">Resource url.</param>
+        /// <param name="body">Request body, to be serialized as JSON or added as is if it's a string.</param>
+        /// <param name="initRequest">IRestRequest initialization.</param>
+        /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
+        public T Patch<T>(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null) =>
+            Execute<T>(new RestRequest(url, Method.PATCH, DataFormat.Json), body, initRequest, apiMethodName);
 
         /// <summary>
         /// Performs POST request.
         /// </summary>
         /// <typeparam name="T">Response type.</typeparam>
         /// <param name="url">Resource url.</param>
-        /// <param name="body">Request body, to be serialized as JSON.</param>
+        /// <param name="body">Request body, to be serialized as JSON or added as is if it's a string.</param>
         /// <param name="initRequest">IRestRequest initialization.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public T Post<T>(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
-        {
-            var request = new RestRequest(url, Method.POST, DataFormat.Json);
-            request.AddJsonBody(body);
-            initRequest?.Invoke(request);
-            return Execute<T>(request, apiMethodName);
-        }
-
-        /// <summary>
-        /// Performs POST request.
-        /// </summary>
-        /// <param name="url">Resource url.</param>
-        /// <param name="body">Request body, to be serialized as JSON.</param>
-        /// <param name="initRequest">IRestRequest initialization.</param>
-        /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public string Post(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
-        {
-            var request = new RestRequest(url, Method.POST, DataFormat.Json);
-            request.AddJsonBody(body);
-            initRequest?.Invoke(request);
-            return Execute(request, apiMethodName);
-        }
+        public T Post<T>(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null) =>
+            Execute<T>(new RestRequest(url, Method.POST, DataFormat.Json), body, initRequest, apiMethodName);
 
         /// <summary>
         /// Performs PUT request.
         /// </summary>
         /// <typeparam name="T">Response type.</typeparam>
         /// <param name="url">Resource url.</param>
-        /// <param name="body">Request body, to be serialized as JSON.</param>
+        /// <param name="body">Request body, to be serialized as JSON or added as is if it's a string.</param>
         /// <param name="initRequest">IRestRequest initialization.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public T Put<T>(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
-        {
-            var request = new RestRequest(url, Method.PUT, DataFormat.Json);
-            request.AddJsonBody(body);
-            initRequest?.Invoke(request);
-            return Execute<T>(request, apiMethodName);
-        }
-
-        /// <summary>
-        /// Performs PUT request.
-        /// </summary>
-        /// <param name="url">Resource url.</param>
-        /// <param name="body">Request body, to be serialized as JSON.</param>
-        /// <param name="initRequest">IRestRequest initialization.</param>
-        /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public string Put(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
-        {
-            var request = new RestRequest(url, Method.PUT, DataFormat.Json);
-            request.AddJsonBody(body);
-            initRequest?.Invoke(request);
-            return Execute(request, apiMethodName);
-        }
-
-        /// <summary>
-        /// Performs PUT request.
-        /// </summary>
-        /// <param name="url">Resource url.</param>
-        /// <param name="body">Request body, serialized as string.</param>
-        /// <param name="initRequest">IRestRequest initialization.</param>
-        /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public string Put(string url, string body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
-        {
-            var request = new RestRequest(url, Method.PUT, DataFormat.None);
-            request.AddParameter(string.Empty, body, ParameterType.RequestBody);
-            initRequest?.Invoke(request);
-            return Execute(request, apiMethodName);
-        }
-
-        /// <summary>
-        /// Performs DELETE request.
-        /// </summary>
-        /// <param name="url">Resource url.</param>
-        /// <param name="body">Request body, serialized as string.</param>
-        /// <param name="initRequest">IRestRequest initialization.</param>
-        /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public T Delete<T>(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
-        {
-            var request = new RestRequest(url, Method.DELETE, DataFormat.Json);
-            if (body != null)
-            {
-                request.AddJsonBody(body);
-            }
-
-            initRequest?.Invoke(request);
-            return Execute<T>(request, apiMethodName);
-        }
-
-        /// <summary>
-        /// Performs DELETE request.
-        /// </summary>
-        /// <param name="url">Resource url.</param>
-        /// <param name="body">Request body, serialized as string.</param>
-        /// <param name="initRequest">IRestRequest initialization.</param>
-        /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public string Delete(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
-        {
-            var request = new RestRequest(url, Method.DELETE, DataFormat.Json);
-            if (body != null)
-            {
-                request.AddJsonBody(body);
-            }
-
-            initRequest?.Invoke(request);
-            return Execute(request, apiMethodName);
-        }
+        public T Put<T>(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null) =>
+            Execute<T>(new RestRequest(url, Method.PUT, DataFormat.Json), body, initRequest, apiMethodName);
     }
 }

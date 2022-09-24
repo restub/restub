@@ -36,7 +36,7 @@ namespace Restub.Tests.Pochta.Tariff
         /// <param name="request">Tariff calculation request.</param>
         /// <returns>Calculated tariff in the requested format.</returns>
         public string Calculate(TariffResponseFormat format, TariffRequest request) =>
-            Get("v2/calculate/tariff", r => r
+            Get<string>("v2/calculate/tariff", r => r
                 .AddQueryParameter(GetFormat(format), null)
                 .AddQueryString(request));
     }

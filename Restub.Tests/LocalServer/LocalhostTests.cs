@@ -58,7 +58,7 @@ namespace Restub.Tests.LocalServer
             var result = Client.Hello();
             Assert.That(result, Is.EqualTo("Hello world!"));
 
-            Assert.That(() => Client.Get("/api/quux"),
+            Assert.That(() => Client.Get<string>("/api/quux"),
                 Throws.TypeOf<RestubException>()
                     .With.Property(nameof(RestubException.StatusCode))
                         .EqualTo(HttpStatusCode.NotFound));
@@ -78,7 +78,7 @@ namespace Restub.Tests.LocalServer
             Assert.That(result, Is.Not.Null.Or.Empty);
             Assert.That(result.ID, Is.EqualTo(2));
             Assert.That(result.Name, Is.EqualTo("Bob"));
-            Assert.That(result.Size, Is.EqualTo(321m));
+            Assert.That(result.Size, Is.Not.EqualTo(0));
         }
 
         [Test]
@@ -94,10 +94,28 @@ namespace Restub.Tests.LocalServer
         [Test]
         public void LocalhostClientUpdatePerson()
         {
+            // all properties are required
             var result = Client.UpdatePerson(12, "Foobar", 333);
             Assert.That(result, Is.Not.Null);
             Assert.That(result.ID, Is.EqualTo(12));
             Assert.That(result.Name, Is.EqualTo("Foobar"));
+            Assert.That(result.Size, Is.EqualTo(333m));
+        }
+
+        [Test]
+        public void LocalhostClientPatchPerson()
+        {
+            // only some properties can be specified
+            var result = Client.PatchPerson(1, "Alifie");
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.ID, Is.EqualTo(1));
+            Assert.That(result.Name, Is.EqualTo("Alifie"));
+            Assert.That(result.Size, Is.EqualTo(123m));
+
+            result = Client.PatchPerson(2, null, 333m);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.ID, Is.EqualTo(2));
+            Assert.That(result.Name, Is.EqualTo("Bob"));
             Assert.That(result.Size, Is.EqualTo(333m));
         }
 
