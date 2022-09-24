@@ -287,6 +287,22 @@ namespace Restub
         /// <summary>
         /// Performs PUT request.
         /// </summary>
+        /// <typeparam name="T">Response type.</typeparam>
+        /// <param name="url">Resource url.</param>
+        /// <param name="body">Request body, to be serialized as JSON.</param>
+        /// <param name="initRequest">IRestRequest initialization.</param>
+        /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
+        public T Put<T>(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
+        {
+            var request = new RestRequest(url, Method.PUT, DataFormat.Json);
+            request.AddJsonBody(body);
+            initRequest?.Invoke(request);
+            return Execute<T>(request, apiMethodName);
+        }
+
+        /// <summary>
+        /// Performs PUT request.
+        /// </summary>
         /// <param name="url">Resource url.</param>
         /// <param name="body">Request body, to be serialized as JSON.</param>
         /// <param name="initRequest">IRestRequest initialization.</param>
