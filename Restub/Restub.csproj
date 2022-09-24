@@ -20,7 +20,14 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageReleaseNotes>Initial beta release.
+    <PackageReleaseNotes>Beta release. What's new:
+
+    v0.2.11
+    — #2 Added support for asynchronous method execution.
+    — #1 Added support for HTTP PUT, PATCH, HEAD, OPTIONS, DELETE verbs.
+
+    v0.1.7
+    — Initial beta release.
     </PackageReleaseNotes>
   </PropertyGroup>
 

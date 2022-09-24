@@ -31,7 +31,7 @@ public class GithubClient : RestubClient
   }
 
   public GithubUser GetUser(string name) =>
-    Get<GithubUser>("users/{user}", r => r.AddUrlSegment("user", name));
+    Get<GithubUser>($"users/{name}");
 }
 ```
 

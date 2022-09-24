@@ -12,7 +12,7 @@ namespace Restub.Tests.Github
         }
 
         public GithubUser GetUser(string name) =>
-            Get<GithubUser>("users/{user}", r => r.AddUrlSegment("user", name));
+            Get<GithubUser>($"users/{name}"); // note: use AddUrlSegment instead
 
         public GithubOrg[] GetUserOrgs(string name) =>
             Get<GithubOrg[]>("users/{user}/orgs", r => r.AddUrlSegment("user", name));
