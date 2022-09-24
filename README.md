@@ -17,8 +17,8 @@ Uses RestSharp library and Newtonsoft.Json serializer behind the scenes.
 ## Getting started
 
 * Add the Nuget package: https://www.nuget.org/packages/restub
-* Implement request and response classes used by your REST API service
 * Subclass `RestubClient`, add REST API methods
+* Implement request and response classes used by your REST API service
 * Add authentication support by subclassing `Authenticator`, if needed
 
 ## Sample REST client
@@ -30,20 +30,20 @@ public class GithubClient : RestubClient
   { 
   }
 
-  public GithubOrg[] GetUserOrgs(string user) =>
-    Get<GithubOrg[]>("users/{u}/orgs", r => r.AddUrlSegment("u", user));
+  public GithubUser GetUser(string name) =>
+    Get<GithubUser>("users/{user}", r => r.AddUrlSegment("user", name));
 }
 ```
 
 ## Sample DTO class
 
 ```c#
-public class GithubOrg
+public class GithubUser
 {
   public int ID { get; set; }
   public string Url { get; set; }
   public string Login { get; set; }
-  public string Description { get; set; }
+  public string Name { get; set; }
 }
 ```
 
@@ -56,8 +56,8 @@ var client = new GithubClient();
 // trace all API calls to the console
 client.Tracer = Console.WriteLine;
 
-// get user's organizations
-var orgs = client.GetUserOrgs("yallie");
+// get user by name
+var orgs = client.GetUser("yallie");
 ```
 
 ## Advantages
@@ -66,12 +66,14 @@ var orgs = client.GetUserOrgs("yallie");
 * Enable built-in tracing with a single line of code
 * Explore API calls logs within your IDE while running the unit tests
 * Use unannotated POCO classes for requests and responses
+* Execute HTTP GET, POST, HEAD, PUT, PATCH, OPTIONS or DELETE requests
 * Implement Authenticator if your API requires authentication
 * Supports .NET 4.6.2 and .NET 6.0 frameworks
 
 ## Disadvantages
 
 * No async support as of now (planned for the future versions)
+* No support for XML serialization (currently not planned)
 * Depends on RestSharp and Newtonsoft.Json libraries.
 
 <details>

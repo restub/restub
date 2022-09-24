@@ -9,7 +9,10 @@
         { 
         }
 
-        public GithubOrg[] GetUserOrgs(string user) =>
-            Get<GithubOrg[]>("users/{user}/orgs", r => r.AddUrlSegment("user", user));
+        public GithubUser GetUser(string name) =>
+            Get<GithubUser>("users/{user}", r => r.AddUrlSegment("user", name));
+
+        public GithubOrg[] GetUserOrgs(string name) =>
+            Get<GithubOrg[]>("users/{user}/orgs", r => r.AddUrlSegment("user", name));
     }
 }

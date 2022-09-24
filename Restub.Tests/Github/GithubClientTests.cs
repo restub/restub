@@ -12,6 +12,18 @@ namespace Restub.Tests.Github
         };
 
         [Test]
+        public void GithubClientReturnsUserByName()
+        {
+            var user = Client.GetUser("yallie");
+            Assert.That(user, Is.Not.Null);
+
+            Assert.That(user.ID, Is.EqualTo(672878));
+            Assert.That(user.Login, Is.EqualTo("yallie"));
+            Assert.That(user.Name, Is.EqualTo("Alexey Yakovlev"));
+            Assert.That(user.Url, Is.EqualTo("https://api.github.com/users/yallie"));
+        }
+
+        [Test]
         public void GithubClientReturnsUsersOrganizations()
         {
             var orgs = Client.GetUserOrgs("yallie");
