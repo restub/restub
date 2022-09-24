@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO;
@@ -22,10 +19,19 @@ namespace Restub.Tests.LocalServer
 
         private static ConcurrentDictionary<int, LocalhostPerson> PopulatePeople()
         {
+            var people = new[]
+            {
+                new LocalhostPerson { ID = LastID, Name = "Alice", Size = 123, },
+                new LocalhostPerson { ID = LastID, Name = "Bob", Size = 321, },
+                new LocalhostPerson { ID = LastID, Name = "Carl", Size = 222, },
+            };
+
             var result = new ConcurrentDictionary<int, LocalhostPerson>();
-            result[1] = new LocalhostPerson { ID = LastID, Name = "Alice", Size = 123, };
-            result[2] = new LocalhostPerson { ID = LastID, Name = "Bob", Size = 321, };
-            result[3] = new LocalhostPerson { ID = LastID, Name = "Carl", Size = 222, };
+            foreach (var p in people)
+            {
+                result[p.ID] = p;
+            }
+
             return result;
         }
 
