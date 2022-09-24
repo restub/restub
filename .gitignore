@@ -3,4 +3,4 @@
 /**/obj
 /**/*.bak
 /.temp
-/CdekSdk.Tests/TestResults/*.*
+/Restub.Tests/TestResults/*.*

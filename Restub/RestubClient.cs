@@ -215,22 +215,7 @@ namespace Restub
         /// </summary>
         /// <param name="request">The request to execute.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        internal void Execute(IRestRequest request, [CallerMemberName] string apiMethodName = null)
-        {
-            PrepareRequest(request, apiMethodName);
-            var response = Client.Execute(request);
-
-            // there is no body deserialization step, so we need to trace
-            Trace(response);
-            ThrowOnFailure(response);
-        }
-
-        /// <summary>
-        /// Executes the given request and checks the result.
-        /// </summary>
-        /// <param name="request">The request to execute.</param>
-        /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        internal string ExecuteString(IRestRequest request, [CallerMemberName] string apiMethodName = null)
+        internal string Execute(IRestRequest request, [CallerMemberName] string apiMethodName = null)
         {
             PrepareRequest(request, apiMethodName);
             var response = Client.Execute(request);
@@ -265,7 +250,7 @@ namespace Restub
         {
             var request = new RestRequest(url, Method.GET, DataFormat.Json);
             initRequest?.Invoke(request);
-            return ExecuteString(request, apiMethodName);
+            return Execute(request, apiMethodName);
         }
 
         /// <summary>
@@ -291,12 +276,12 @@ namespace Restub
         /// <param name="body">Request body, to be serialized as JSON.</param>
         /// <param name="initRequest">IRestRequest initialization.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public void Post(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
+        public string Post(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
         {
             var request = new RestRequest(url, Method.POST, DataFormat.Json);
             request.AddJsonBody(body);
             initRequest?.Invoke(request);
-            Execute(request, apiMethodName);
+            return Execute(request, apiMethodName);
         }
 
         /// <summary>
@@ -306,12 +291,12 @@ namespace Restub
         /// <param name="body">Request body, to be serialized as JSON.</param>
         /// <param name="initRequest">IRestRequest initialization.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public void Put(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
+        public string Put(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
         {
             var request = new RestRequest(url, Method.PUT, DataFormat.Json);
             request.AddJsonBody(body);
             initRequest?.Invoke(request);
-            Execute(request, apiMethodName);
+            return Execute(request, apiMethodName);
         }
 
         /// <summary>
@@ -321,12 +306,12 @@ namespace Restub
         /// <param name="body">Request body, serialized as string.</param>
         /// <param name="initRequest">IRestRequest initialization.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public void Put(string url, string body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
+        public string Put(string url, string body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
         {
             var request = new RestRequest(url, Method.PUT, DataFormat.None);
             request.AddParameter(string.Empty, body, ParameterType.RequestBody);
             initRequest?.Invoke(request);
-            Execute(request, apiMethodName);
+            return Execute(request, apiMethodName);
         }
 
         /// <summary>
@@ -355,7 +340,7 @@ namespace Restub
         /// <param name="body">Request body, serialized as string.</param>
         /// <param name="initRequest">IRestRequest initialization.</param>
         /// <param name="apiMethodName">Strong-typed REST API method name, for tracing.</param>
-        public void Delete(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
+        public string Delete(string url, object body, Action<IRestRequest> initRequest = null, [CallerMemberName] string apiMethodName = null)
         {
             var request = new RestRequest(url, Method.DELETE, DataFormat.Json);
             if (body != null)
@@ -364,7 +349,7 @@ namespace Restub
             }
 
             initRequest?.Invoke(request);
-            Execute(request, apiMethodName);
+            return Execute(request, apiMethodName);
         }
     }
 }
