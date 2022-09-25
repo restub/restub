@@ -63,10 +63,12 @@ var orgs = client.GetUser("yallie");
 ## Advantages
 
 * Get a full-featured REST API client with just a few lines of code
+* Execute HTTP GET, POST, HEAD, PUT, PATCH, OPTIONS or DELETE requests
 * Enable built-in tracing with a single line of code
 * Explore API calls logs within your IDE while running the unit tests
 * Use unannotated POCO classes for requests and responses
-* Execute HTTP GET, POST, HEAD, PUT, PATCH, OPTIONS or DELETE requests
+* Enums serialized as numbers and/or strings can be mixed within the same API
+* Optionally add standard DataMember/EnumMember attributes for more control
 * Implement Authenticator if your API requires authentication
 * Supports synchronous and asynchronous request execution
 * Targets .NET 4.6.2 and .NET 6.0 frameworks
