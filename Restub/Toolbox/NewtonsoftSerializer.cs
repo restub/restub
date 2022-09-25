@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using RestSharp;
 using RestSharp.Serialization;
 
@@ -28,8 +29,8 @@ namespace Restub.Toolbox
         {
             var settings = new JsonSerializerSettings();
             settings.DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind;
-            settings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-            settings.Converters.Add(new Newtonsoft.Json.Converters.IsoDateTimeConverter
+            settings.Converters.Add(new AutoEnumConverter());
+            settings.Converters.Add(new IsoDateTimeConverter
             {
                 DateTimeFormat = @"yyyy-MM-dd\THH:mm:sszzzz",
                 DateTimeStyles = DateTimeStyles.AllowWhiteSpaces,

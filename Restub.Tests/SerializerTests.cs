@@ -81,17 +81,38 @@ namespace Restub.Tests
         }
 
         [Test]
-        public void EnumSerialization()
+        public void AutoEnumSerializationNoDataContract()
         {
             // known value
             var json = Serialize(DayOfWeek.Friday);
-            Assert.That(json, Is.EqualTo("\"Friday\""));
-            var dow = Deserialize<DayOfWeek>("\"Friday\"");
+            Assert.That(json, Is.EqualTo("5"));
+            var dow = Deserialize<DayOfWeek>("5");
             Assert.That(dow, Is.EqualTo(DayOfWeek.Friday));
 
             // unknown value
             Assert.That(Serialize((DayOfWeek)123), Is.EqualTo("123"));
             Assert.That(Deserialize<DayOfWeek>("123"), Is.EqualTo((DayOfWeek)123));
+        }
+
+        [DataContract]
+        public enum TestEnum
+        {
+            [EnumMember(Value = "hello")]
+            HelloThere
+        }
+
+        [Test]
+        public void AutoEnumSerializationDataContract()
+        {
+            // known value
+            var json = Serialize(TestEnum.HelloThere);
+            Assert.That(json, Is.EqualTo("\"hello\""));
+            var dow = Deserialize<TestEnum>("\"hello\"");
+            Assert.That(dow, Is.EqualTo(TestEnum.HelloThere));
+
+            // unknown value
+            Assert.That(Serialize((TestEnum)123), Is.EqualTo("123"));
+            Assert.That(Deserialize<TestEnum>("123"), Is.EqualTo((TestEnum)123));
         }
     }
 }

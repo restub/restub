@@ -1,4 +1,5 @@
-﻿using Restub.Toolbox;
+﻿using Restub.DataContracts;
+using Restub.Toolbox;
 
 namespace Restub.Tests.Pochta.Tariff
 {
@@ -17,7 +18,7 @@ namespace Restub.Tests.Pochta.Tariff
         protected override Authenticator CreateAuthenticator() => null;
 
         private string GetFormat(TariffResponseFormat format) =>
-            ParameterHelper.GetEnumMemberValue(format);
+            ParameterHelper.GetEnumMemberValue(format) as string;
 
         /// <summary>
         /// Calculates the tariff.

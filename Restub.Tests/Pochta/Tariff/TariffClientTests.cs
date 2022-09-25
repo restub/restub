@@ -16,7 +16,7 @@ namespace Restub.Tests.Pochta.Tariff
         {
             var tariff = Client.Calculate(new TariffRequest
             {
-                Object = 23030,
+                Object = TariffObjectType.Parcel1Class,
                 From = 344038,
                 To = 115162,
                 Weight = 1000,
@@ -34,10 +34,10 @@ namespace Restub.Tests.Pochta.Tariff
         {
             var json = Client.Calculate(TariffResponseFormat.Json, new TariffRequest
             {
-                Object = 23030,
+                Object = TariffObjectType.LetterRegular,
                 From = 344038,
                 To = 115162,
-                Weight = 1000,
+                Weight = 100,
                 Date = DateTime.Now,
                 Time = "0223",
             });
@@ -45,7 +45,6 @@ namespace Restub.Tests.Pochta.Tariff
             Assert.That(json, Is.Not.Null.Or.Empty);
             Assert.That(json, Does.StartWith("{").And.EndWith("}"));
             Assert.That(json, Does.Contain("344038"));
-            Assert.That(json, Does.Contain("115162"));
         }
 
         [Test]
@@ -53,7 +52,7 @@ namespace Restub.Tests.Pochta.Tariff
         {
             var html = Client.Calculate(TariffResponseFormat.Html, new TariffRequest
             {
-                Object = 23030,
+                Object = TariffObjectType.WrapperRegular,
                 From = 344038,
                 To = 115162,
                 Weight = 1000,
@@ -65,7 +64,6 @@ namespace Restub.Tests.Pochta.Tariff
             Assert.That(html.Trim(), Does.StartWith("<").And.EndWith(">"));
             Assert.That(html, Does.Contain("<p>"));
             Assert.That(html, Does.Contain("344038"));
-            Assert.That(html, Does.Contain("115162"));
         }
     }
 }

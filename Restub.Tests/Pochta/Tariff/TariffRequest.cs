@@ -8,11 +8,8 @@ namespace Restub.Tests.Pochta.Tariff
     [DataContract]
     public class TariffRequest
     {
-        // [DataMember(Name = null)]
-        // public string Format { get; set; } = "json";
-
         [DataMember(Name = "object")]
-        public int Object { get; set; } = 23030;
+        public TariffObjectType Object { get; set; } = TariffObjectType.ParcelCourierEms;
 
         [DataMember(Name = "from")]
         public int From { get; set; } = 344038;

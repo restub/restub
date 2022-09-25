@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using RestSharp;
 using RestSharp.Serialization;
+using Restub.DataContracts;
 
 namespace Restub.Toolbox
 {
@@ -24,8 +25,9 @@ namespace Restub.Toolbox
         /// </summary>
         /// <param name="request">Request to populate parameters.</param>
         /// <param name="dataContract">Data contract to get the parameters from.</param>
-        public static IRestRequest AddQueryString(this IRestRequest request, object dataContract) =>
-            request.AddParameters(dataContract, ParameterType.QueryString);
+        /// <param name="mode">Enum values serialization mode.</param>
+        public static IRestRequest AddQueryString(this IRestRequest request, object dataContract, EnumSerializationMode mode = EnumSerializationMode.Auto) =>
+            request.AddParameters(dataContract, ParameterType.QueryString, mode);
 
         /// <summary>
         /// Adds all dataContract properties to the given request.
@@ -33,7 +35,8 @@ namespace Restub.Toolbox
         /// <param name="request">Request to populate parameters.</param>
         /// <param name="dataContract">Data contract to get the parameters from.</param>
         /// <param name="type">Parameter type.</param>
-        public static IRestRequest AddParameters(this IRestRequest request, object dataContract, ParameterType type = ParameterType.GetOrPost)
+        /// <param name="mode">Enum values serialization mode.</param>
+        public static IRestRequest AddParameters(this IRestRequest request, object dataContract, ParameterType type = ParameterType.GetOrPost, EnumSerializationMode mode = EnumSerializationMode.Auto)
         {
             if (dataContract == null || dataContract.GetType().IsPrimitive)
             {
@@ -65,7 +68,7 @@ namespace Restub.Toolbox
                     // get enum value from EnumMember attribute
                     if (isEnumValue)
                     {
-                        var valueName = GetEnumMemberValue(nonNullableType, value);
+                        var valueName = GetEnumMemberValue(nonNullableType, value, mode);
                         request.AddParameter(parameterName, valueName, type);
                         continue;
                     }
@@ -99,18 +102,29 @@ namespace Restub.Toolbox
         /// </summary>
         /// <typeparam name="T">The type of the enumeration</typeparam>
         /// <param name="enumValue">The value to inspect.</param>
-        /// <returns>String representation of the value.</returns>
-        public static string GetEnumMemberValue<T>(T enumValue) =>
-            GetEnumMemberValue(typeof(T), enumValue);
+        /// <param name="mode">Enum values serialization mode.</param>
+        /// <returns>String or integer representation of the value.</returns>
+        public static object GetEnumMemberValue<T>(T enumValue, EnumSerializationMode mode = EnumSerializationMode.Auto) =>
+            GetEnumMemberValue(typeof(T), enumValue, mode);
 
         /// <summary>
         /// Returns the enumeration member value.
         /// </summary>
         /// <param name="nonNullableType">The type of the enumeration</param>
         /// <param name="value">The value to inspect.</param>
-        /// <returns>String representation of the value.</returns>
-        private static string GetEnumMemberValue(Type nonNullableType, object value)
+        /// <param name="mode">Enum values serialization mode.</param>
+        /// <returns>String or integer representation of the value.</returns>
+        private static object GetEnumMemberValue(Type nonNullableType, object value, EnumSerializationMode mode = EnumSerializationMode.Auto)
         {
+            // auto = serialize as integer if not marked as DataContract
+            if ((mode == EnumSerializationMode.Number) ||
+                (mode == EnumSerializationMode.Auto && 
+                !nonNullableType.IsDefined(typeof(DataContractAttribute))))
+            {
+                return Convert.ToInt32(value);
+            }
+
+            // serialize as string
             var valueName = Enum.GetName(nonNullableType, value);
             if (valueName == null)
             {

@@ -5,6 +5,7 @@ using Restub.Toolbox;
 using NUnit.Framework;
 using RestSharp;
 using Newtonsoft.Json;
+using Restub.DataContracts;
 
 namespace Restub.Tests
 {
@@ -25,6 +26,7 @@ namespace Restub.Tests
             Assert.That(typeof(ParameterHelperTests).GetDefaultValue(), Is.EqualTo(default(ParameterHelperTests)));
         }
 
+        [DataContract]
         private enum EnumMemberValues
         {
             [EnumMember(Value = "one")]
@@ -35,13 +37,37 @@ namespace Restub.Tests
         }
 
         [Test]
-        public void EnumMemberValueTests()
+        public void EnumMemberValueStringTests()
         {
             string str<T>(T enumMember) =>
-                ParameterHelper.GetEnumMemberValue(enumMember);
+                (string)ParameterHelper.GetEnumMemberValue(enumMember, EnumSerializationMode.String);
 
             // default string representation is the same as ToString()
             Assert.That(str(DayOfWeek.Friday), Is.EqualTo(nameof(DayOfWeek.Friday)));
+            Assert.That(str(EnumMemberValues.One), Is.EqualTo("one"));
+            Assert.That(str(EnumMemberValues.Two), Is.EqualTo("2"));
+        }
+
+        [Test]
+        public void EnumMemberValueIntegerTests()
+        {
+            int str<T>(T enumMember) =>
+                (int)ParameterHelper.GetEnumMemberValue(enumMember, EnumSerializationMode.Number);
+
+            // default string representation is the same as ToString()
+            Assert.That(str(DayOfWeek.Friday), Is.EqualTo((int)DayOfWeek.Friday));
+            Assert.That(str(EnumMemberValues.One), Is.EqualTo((int)EnumMemberValues.One));
+            Assert.That(str(EnumMemberValues.Two), Is.EqualTo((int)EnumMemberValues.Two));
+        }
+
+        [Test]
+        public void EnumMemberValueAutoTests()
+        {
+            object str<T>(T enumMember) =>
+                ParameterHelper.GetEnumMemberValue(enumMember);
+
+            // default string representation is the same as ToString()
+            Assert.That(str(DayOfWeek.Friday), Is.EqualTo((int)DayOfWeek.Friday));
             Assert.That(str(EnumMemberValues.One), Is.EqualTo("one"));
             Assert.That(str(EnumMemberValues.Two), Is.EqualTo("2"));
         }
@@ -188,6 +214,7 @@ namespace Restub.Tests
             Assert.That(typeof(DayOfWeek?).GetNonNullableType(), Is.EqualTo(typeof(DayOfWeek)));
         }
 
+        [DataContract]
         private enum Lang
         {
             [EnumMember(Value = "rus")]
