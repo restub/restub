@@ -22,6 +22,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
+    v0.3.6
+    — #3 Better support for enum serialization.
+
     v0.2.11
     — #2 Added support for asynchronous method execution.
     — #1 Added support for HTTP PUT, PATCH, HEAD, OPTIONS, DELETE verbs.
