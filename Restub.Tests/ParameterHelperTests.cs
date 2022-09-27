@@ -100,6 +100,9 @@ namespace Restub.Tests
 
             [DataMember(Name = "important", IsRequired = true)]
             public bool Important { get; set; }
+
+            [IgnoreDataMember]
+            public string DontDoThat { get; set; } = "Now";
         }
 
         [Test]

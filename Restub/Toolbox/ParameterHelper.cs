@@ -46,6 +46,11 @@ namespace Restub.Toolbox
             var props = dataContract.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (var p in props)
             {
+                if (p.IsDefined(typeof(IgnoreDataMemberAttribute)))
+                {
+                    continue;
+                }
+
                 var value = p.GetValue(dataContract);
                 var defaultValue = p.PropertyType.GetDefaultValue();
                 var isNonDefault = !Equals(value, defaultValue);
