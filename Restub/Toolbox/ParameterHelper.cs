@@ -87,7 +87,12 @@ namespace Restub.Toolbox
                     // support array values like this: pages=1,2,3
                     if (value is IEnumerable enumerable)
                     {
-                        value = string.Join(",", enumerable.OfType<object>());
+                        var enumObjects = enumerable.OfType<object>();
+                        var stringObjects = enumObjects.Select(o =>
+                            o != null && o.GetType().IsEnum ?
+                                GetEnumMemberValue(o) : $"{o}");
+
+                        value = string.Join(",", stringObjects);
                         request.AddParameter(parameterName, value, type);
                         continue;
                     }
