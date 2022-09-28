@@ -37,10 +37,16 @@ namespace Restub
             // Set up REST client
             Client = сlient;
             Client.Authenticator = CreateAuthenticator();
-            Client.Encoding = Encoding.UTF8;
+            Client.Encoding = CreateEncoding();
             Client.ThrowOnDeserializationError = false;
             Client.UseSerializer(() => Serializer);
         }
+
+        /// <summary>
+        /// Creates the encoding used by REST service.
+        /// </summary>
+        /// <returns>Encoding for REST messages.</returns>
+        protected virtual Encoding CreateEncoding() => Encoding.UTF8;
 
         /// <summary>
         /// When overridden in the derived class, creates the authenticator.
