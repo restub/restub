@@ -15,12 +15,17 @@
     <RepositoryUrl>https://github.com/restub/restub.git</RepositoryUrl>
     <PackageTags>rest; api; stub; client; framework; tracing; logging</PackageTags>
     <PackageIcon>restub.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <Title>restub</Title>
     <Description>Build your traceable REST API client with a few lines of code.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
+
+    v0.5.6
+    — #6 Encoding is now customizable.
+    — #5 Fixed enum array parameters serialization in query strings.
 
     v0.4.7
     — #4 AddParameters now ignores members marked with IgnoreDataMemberAttribute.
@@ -44,6 +49,7 @@
 
   <ItemGroup>
     <None Include="Resources\restub.png" Pack="true" PackagePath="\" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
