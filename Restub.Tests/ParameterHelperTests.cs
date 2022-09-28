@@ -98,6 +98,9 @@ namespace Restub.Tests
             [DataMember(Name = "integers")]
             public int[] Integers { get; set; }
 
+            [DataMember(Name = "weekdays")]
+            public DayOfWeek[] WeekDays { get; set; }
+
             [DataMember(Name = "important", IsRequired = true)]
             public bool Important { get; set; }
 
@@ -191,6 +194,10 @@ namespace Restub.Tests
             req.AddParameters(new Request { Important = true }, ParameterType.Cookie);
             Assert.That(req.Params.Count, Is.EqualTo(3));
             Assert.That(req.Params["important"], Is.EqualTo(Tuple.Create(true, ParameterType.Cookie)));
+
+            req.AddParameters(new Request { WeekDays = new[] { DayOfWeek.Tuesday, DayOfWeek.Friday } }, ParameterType.QueryString);
+            Assert.That(req.Params.Count, Is.EqualTo(4));
+            Assert.That(req.Params["weekdays"], Is.EqualTo(Tuple.Create("2,5", ParameterType.QueryString)));
         }
 
         [Test]
