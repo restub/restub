@@ -23,6 +23,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
+    v0.6.6
+    — #7 Added IRestubSerializer interface for easier unit testing.
+
     v0.5.6
     — #6 Encoding is now customizable.
     — #5 Fixed enum array parameters serialization in query strings.
