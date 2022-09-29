@@ -17,7 +17,7 @@ namespace Restub.Toolbox
         /// <summary>
         /// Default serializer to be used when a request doesn't have one.
         /// </summary>
-        public static IRestSerializer DefaultSerializer { get; set; } =
+        public static IRestubSerializer DefaultSerializer { get; set; } =
             new NewtonsoftSerializer();
 
         /// <summary>

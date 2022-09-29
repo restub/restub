@@ -78,8 +78,9 @@ var orgs = client.GetUser("yallie");
 * No support for XML serialization
 * Depends on RestSharp and Newtonsoft.Json libraries.
 
-<details>
-  <summary>A typical trace log looks like this:</summary>
+## Trace log
+
+A typical trace log looks like this:
     
 ```c
 // GetAuthToken
@@ -129,7 +130,7 @@ headers: {
   Accept = application/json, text/json, text/x-json, text/javascript, application/xml, text/xml
 }
 
-<- OK 200 (OK) https://api.edu.cdek.ru/v2/location/regions?size=3&page=2
+<- OK 200 (OK) https://api.edu.cdek.ru/v2/location/regions?size=2&page=3
 timings: {
   started: 2022-09-23 19:55:56
   elapsed: 0:00:00.859
@@ -158,57 +159,13 @@ body: [
     "region_code": 590
   },
   {
-    "country_code": "JP",
-    "country": "Япония",
-    "region": "Фукусима",
-    "region_code": 855
-  },
-  {
     "country_code": "FR",
     "country": "Франция",
     "region": "Ло и Гаронна",
     "region_code": 560
   }
 ]
-
-// GetRegions
--> GET https://api.edu.cdek.ru/v2/location/regions?page=3
-headers: {
-  X-ApiClientName = restub v0.1.6.37278
-  X-ApiMethodName = GetRegions
-  Authorization = Bearer eyJhbGciOiJSUzI1Ni....eq62ZCji34UPjozvWCUXv16ZvTA
-  Accept = application/json, text/json, text/x-json, text/javascript, application/xml, text/xml
-}
-
-<- ERROR 400 (BadRequest) https://api.edu.cdek.ru/v2/location/regions?page=3
-timings: {
-  started: 2022-09-23 19:51:17
-  elapsed: 0:00:00.078
-}
-headers: {
-  Transfer-Encoding = chunked
-  Connection = keep-alive
-  Keep-Alive = timeout=15
-  X-Content-Type-Options = nosniff
-  X-XSS-Protection = 1; mode=block
-  Pragma = no-cache
-  X-Frame-Options = DENY
-  Cache-Control = no-cache, no-store, max-age=0, must-revalidate
-  Content-Type = application/json
-  Date = Fri, 23 Sep 2022 16:51:19 GMT
-  Expires = 0
-  Server = QRATOR
-}
-body: {
-  "errors": [
-    {
-      "code": "v2_field_is_empty",
-      "message": "[size] is empty"
-    }
-  ]
-}
 ```
-</details>
 
 # restub versioning
 

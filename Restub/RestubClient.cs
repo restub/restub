@@ -58,7 +58,7 @@ namespace Restub
         /// Creates the serializer.
         /// </summary>
         /// <returns>Serializer for REST messages.</returns>
-        protected virtual IRestSerializer CreateSerializer() =>
+        protected virtual IRestubSerializer CreateSerializer() =>
             new NewtonsoftSerializer();
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Restub
         /// <summary>
         /// Gets the serializer.
         /// </summary>
-        public IRestSerializer Serializer { get; }
+        public IRestubSerializer Serializer { get; }
 
         private void PrepareRequest(IRestRequest request, string apiMethodName)
         {

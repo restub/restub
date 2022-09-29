@@ -2,14 +2,13 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using RestSharp;
-using RestSharp.Serialization;
 
 namespace Restub.Toolbox
 {
     /// <summary>
     /// Newtonsoft.Json serializer.
     /// </summary>
-    public class NewtonsoftSerializer : IRestSerializer
+    public class NewtonsoftSerializer : IRestubSerializer
     {
         public string[] SupportedContentTypes { get; } =
         {

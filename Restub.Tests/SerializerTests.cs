@@ -9,7 +9,7 @@ namespace Restub.Tests
     [TestFixture]
     public class SerializerTests
     {
-        private NewtonsoftSerializer Ser { get; } = new NewtonsoftSerializer();
+        private IRestubSerializer Ser { get; } = new NewtonsoftSerializer();
 
         private string Serialize<T>(T dto) => Ser.Serialize(dto);
 
