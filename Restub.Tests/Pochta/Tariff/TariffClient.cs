@@ -1,4 +1,5 @@
-﻿using Restub.DataContracts;
+﻿using RestSharp.Authenticators;
+using Restub.DataContracts;
 using Restub.Toolbox;
 
 namespace Restub.Tests.Pochta.Tariff
@@ -14,8 +15,6 @@ namespace Restub.Tests.Pochta.Tariff
         public TariffClient() : base(BaseUrl)
         {
         }
-
-        protected override Authenticator CreateAuthenticator() => null;
 
         private string GetFormat(TariffResponseFormat format) =>
             ParameterHelper.GetEnumMemberValue(format) as string;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using RestSharp.Authenticators;
 
 namespace Restub.Tests.Pochta.Otpravka
 {
@@ -16,7 +17,7 @@ namespace Restub.Tests.Pochta.Otpravka
         {
         }
 
-        protected override Authenticator CreateAuthenticator() =>
+        protected override IAuthenticator CreateAuthenticator() =>
             new OtpravkaAuthenticator(this, (OtpravkaCredentials)Credentials);
 
         /// <summary>

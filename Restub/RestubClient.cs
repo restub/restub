@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using RestSharp;
+using RestSharp.Authenticators;
 using RestSharp.Serialization;
 using Restub.DataContracts;
 using Restub.Toolbox;
@@ -52,7 +53,7 @@ namespace Restub
         /// When overridden in the derived class, creates the authenticator.
         /// </summary>
         /// <returns>Authenticator for REST requests, or null.</returns>
-        protected virtual Authenticator CreateAuthenticator() => null;
+        protected virtual IAuthenticator CreateAuthenticator() => null;
 
         /// <summary>
         /// Creates the serializer.
@@ -191,10 +192,11 @@ namespace Restub
             }
         }
 
-        protected virtual void ThrowException(IRestResponse response, string errorMessage, IHasErrors errorResponse)
-        {
-            throw new RestubException(response.StatusCode, errorMessage, response.ErrorException);
-        }
+        protected virtual void ThrowException(IRestResponse response, string errorMessage, IHasErrors errorResponse) =>
+            throw CreateException(response, errorMessage, errorResponse);
+
+        protected virtual Exception CreateException(IRestResponse response, string errorMessage, IHasErrors errorResponse) =>
+            new RestubException(response.StatusCode, errorMessage, response.ErrorException);
 
         internal static string GetErrorMessage(IHasErrors errorResponse) =>
             errorResponse?.GetErrorMessage() ?? string.Empty;

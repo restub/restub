@@ -1,4 +1,5 @@
-﻿using Restub.Toolbox;
+﻿using RestSharp.Authenticators;
+using Restub.Toolbox;
 
 namespace Restub.Tests.Cdek
 {
@@ -31,7 +32,7 @@ namespace Restub.Tests.Cdek
         {
         }
 
-        protected override Authenticator CreateAuthenticator() =>
+        protected override IAuthenticator CreateAuthenticator() =>
             new CdekAuthenticator(this, (CdekCredentials)Credentials);
 
         protected override IRestubSerializer CreateSerializer() =>
