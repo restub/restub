@@ -5,8 +5,12 @@ using Newtonsoft.Json.Converters;
 
 namespace Restub.Toolbox
 {
+    /// <summary>
+    /// Enum converter that supports both string and numeric representations of enums.
+    /// </summary>
     public class AutoEnumConverter : StringEnumConverter
     {
+        /// <iheritdocs/>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var e = (Enum)value;

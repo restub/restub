@@ -98,6 +98,11 @@ namespace Restub
             }
         }
 
+        /// <summary>
+        /// Checks if the typed response failed and throws the exception.
+        /// </summary>
+        /// <typeparam name="T">Typed response return type.</typeparam>
+        /// <param name="response">Rest response.</param>
         protected virtual void ThrowOnFailure<T>(IRestResponse<T> response)
         {
             // if response is successful, but it has errors, treat is as failure
@@ -110,6 +115,10 @@ namespace Restub
             ThrowOnFailure(response as IRestResponse);
         }
 
+        /// <summary>
+        /// Checks if the untyped response failed and throws the exception.
+        /// </summary>
+        /// <param name="response">Rest response.</param>
         protected virtual void ThrowOnFailure(IRestResponse response)
         {
             if (!response.IsSuccessful)
@@ -117,7 +126,7 @@ namespace Restub
                 // try to find the non-empty error message
                 var errorMessage = response.ErrorMessage;
                 var contentMessage = response.Content;
-                var errorResponse = default(ErrorResponse);
+                var errorResponse = default(IHasErrors);
                 if (response.ContentType != null)
                 {
                     // Text/plain;charset=UTF-8 => text/plain
@@ -131,10 +140,8 @@ namespace Restub
                     // Try to deserialize error response DTO
                     if (Serializer.SupportedContentTypes.Contains(contentType))
                     {
-                        errorResponse = Serializer.Deserialize<ErrorResponse>(response);
-                        contentMessage = string.Join(". ", errorResponse?.Errors?.Select(e => e.Message) ?? new[] { string.Empty }
-                            .Distinct()
-                            .Where(m => !string.IsNullOrWhiteSpace(m)));
+                        errorResponse = TryDeserializeErrorResponse(response);
+                        contentMessage = GetErrorMessage(errorResponse);
                     }
                     else if (response.ContentType.ToLower().Contains("html"))
                     {
@@ -143,7 +150,7 @@ namespace Restub
                     }
                     else
                     {
-                        // Return as is assuming text/plain content
+                        // Return content as is assuming it's text/plain
                         contentMessage = response.Content;
                     }
                 }
@@ -155,7 +162,9 @@ namespace Restub
                 }
 
                 // JSON deserialiation exception is meaningless
-                if (response.ErrorException is Newtonsoft.Json.JsonSerializationException && errorMessage == response.ErrorException.Message)
+                if (response.ErrorException is Newtonsoft.Json.JsonSerializationException && 
+                    errorMessage == response.ErrorException.Message &&
+                    !string.IsNullOrWhiteSpace(contentMessage))
                 {
                     errorMessage = contentMessage;
                 }
@@ -167,7 +176,7 @@ namespace Restub
                 }
 
                 // finally, throw it
-                ThrowException(response, errorMessage, errorResponse);
+                throw CreateException(response, errorMessage, errorResponse);
             }
         }
 
@@ -187,15 +196,36 @@ namespace Restub
                     errorMessage = response.Content;
                 }
 
-                ThrowException(response, errorMessage, errorResponse);
+                throw CreateException(response, errorMessage, errorResponse);
             }
         }
 
-        protected virtual void ThrowException(IRestResponse response, string errorMessage, IHasErrors errorResponse) =>
-            throw CreateException(response, errorMessage, errorResponse);
+        /// <summary>
+        /// Tries to deserialize JSON error response if REST API has single error response for all failures.
+        /// Should never rethrow exceptions, returns null if response cannot be deserialized.
+        /// </summary>
+        /// <param name="response">Rest response to deserialize.</param>
+        private IHasErrors TryDeserializeErrorResponse(IRestResponse response)
+        {
+            try
+            {
+                return DeserializeErrorResponse(response);
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
-        protected virtual Exception CreateException(IRestResponse response, string errorMessage, IHasErrors errorResponse) =>
-            new RestubException(response.StatusCode, errorMessage, response.ErrorException);
+        /// <summary>
+        /// Deserialize JSON error response if REST API has single error response for all failures.
+        /// </summary>
+        /// <param name="response">Rest response to deserialize.</param>
+        protected virtual IHasErrors DeserializeErrorResponse(IRestResponse response) =>
+            Serializer.Deserialize<ErrorResponse>(response);
+
+        protected virtual Exception CreateException(IRestResponse res, string msg, IHasErrors errors) =>
+            new RestubException(res.StatusCode, msg, res.ErrorException);
 
         internal static string GetErrorMessage(IHasErrors errorResponse) =>
             errorResponse?.GetErrorMessage() ?? string.Empty;

@@ -8,12 +8,12 @@ namespace Restub.DataContracts
     public interface IHasErrors
     {
         /// <summary>
-        /// Gets the error message.
+        /// Returns true if the object has errors.
         /// </summary>
         bool HasErrors();
 
         /// <summary>
-        /// Gets the error message.
+        /// Gets user-readable error message.
         /// </summary>
         string GetErrorMessage();
     }

@@ -1,4 +1,7 @@
-﻿using RestSharp.Authenticators;
+﻿using System;
+using RestSharp;
+using RestSharp.Authenticators;
+using Restub.DataContracts;
 using Restub.Toolbox;
 
 namespace Restub.Tests.Cdek
@@ -37,6 +40,12 @@ namespace Restub.Tests.Cdek
 
         protected override IRestubSerializer CreateSerializer() =>
             new CdekSerializer();
+
+        protected override Exception CreateException(IRestResponse res, string msg, IHasErrors errors) =>
+            new CdekException(res.StatusCode, msg, base.CreateException(res, msg, errors));
+
+        protected override IHasErrors DeserializeErrorResponse(IRestResponse response) =>
+            Serializer.Deserialize<CdekErrorResponse>(response);
 
         /// <summary>
         /// Acquires a JWT token for the CDEK API.

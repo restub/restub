@@ -1,12 +1,12 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Restub.DataContracts
+namespace Restub.Tests.Cdek
 {
     /// <summary>
-    /// Sample error message and code DTO.
+    /// Sample CDEK error message and code DTO.
     /// </summary>
     [DataContract]
-    public class Error
+    public class CdekError
     {
         [DataMember(Name = "code")]
         public string Code { get; set; }

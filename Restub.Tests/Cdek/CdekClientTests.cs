@@ -39,7 +39,10 @@ namespace Restub.Tests.Cdek
             Assert.That(regions.Length, Is.EqualTo(10));
 
             // page is specified, but size is not specified
-            Assert.That(() => CdekClient.GetRegions(page: 3), Throws.TypeOf<RestubException>());
+            Assert.That(() => CdekClient.GetRegions(page: 3), 
+                Throws.TypeOf<CdekException>().With
+                    .Message.Contains("[size] is empty").And
+                        .Not.Message.Contains("Cannot deserialize"));
         }
 
         [Test]

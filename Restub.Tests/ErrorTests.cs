@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Restub.DataContracts;
 using NUnit.Framework;
+using Restub.Tests.Cdek;
 
 namespace Restub.Tests
 {
@@ -13,15 +14,15 @@ namespace Restub.Tests
         public void ErrorResponseGetsConverterToAStringMessage()
         {
             Assert.That(RestubClient.GetErrorMessage(null), Is.EqualTo(string.Empty));
-            Assert.That(RestubClient.GetErrorMessage(new ErrorResponse()), Is.EqualTo(string.Empty));
+            Assert.That(RestubClient.GetErrorMessage(new CdekErrorResponse()), Is.EqualTo(string.Empty));
 
-            var msg = RestubClient.GetErrorMessage(new ErrorResponse
+            var msg = RestubClient.GetErrorMessage(new CdekErrorResponse
             {
-                Errors = new List<Error>
+                Errors = new List<CdekError>
                 {
-                    new Error { Message = "Hello" },
-                    new Error { Message = "Cruel" },
-                    new Error { Message = "World" },
+                    new CdekError { Message = "Hello" },
+                    new CdekError { Message = "Cruel" },
+                    new CdekError { Message = "World" },
                 }
             });
 
