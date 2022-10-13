@@ -1,4 +1,5 @@
-﻿using RestSharp.Authenticators;
+﻿using System;
+using RestSharp;
 using Restub.DataContracts;
 using Restub.Toolbox;
 
@@ -15,6 +16,9 @@ namespace Restub.Tests.Pochta.Tariff
         public TariffClient() : base(BaseUrl)
         {
         }
+
+        protected override Exception CreateException(IRestResponse res, string msg, IHasErrors errors) =>
+            new TariffException(res.StatusCode, msg, base.CreateException(res, msg, errors));
 
         private string GetFormat(TariffResponseFormat format) =>
             ParameterHelper.GetEnumMemberValue(format) as string;

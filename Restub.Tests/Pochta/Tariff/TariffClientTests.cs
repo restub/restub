@@ -65,5 +65,19 @@ namespace Restub.Tests.Pochta.Tariff
             Assert.That(html, Does.Contain("<p>"));
             Assert.That(html, Does.Contain("344038"));
         }
+
+        [Test]
+        public void UnknownObjectTypeThrowsException()
+        {
+            var badRequest = new TariffRequest
+            {
+                Object = (TariffObjectType)1,
+            };
+
+            Assert.That(() => Client.Calculate(badRequest),
+                Throws.TypeOf<TariffException>().With
+                    .Message.Contains("Объект 1 не поддерживается").And
+                        .Not.Message.Contains("BadRequest"));
+        }
     }
 }

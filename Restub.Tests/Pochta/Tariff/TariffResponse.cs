@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
+using Restub.DataContracts;
 
 namespace Restub.Tests.Pochta.Tariff
 {
     [DataContract]
-    public class TariffResponse
+    public class TariffResponse : IHasErrors
     {
         [DataMember(Name = "version_api")]
         public int VersionApi { get; set; }
@@ -92,5 +94,14 @@ namespace Restub.Tests.Pochta.Tariff
 
         [DataMember(Name = "place")]
         public string Place { get; set; }
+
+        [DataMember(Name = "errors")]
+        public TariffError[] Errors { get; set; }
+
+        public string GetErrorMessage() =>
+            string.Join(". ", (Errors ?? Enumerable.Empty<TariffError>())
+                .Select(e => e?.Message).Where(msg => msg != null));
+
+        public bool HasErrors() => Errors?.Length > 0;
     }
 }
