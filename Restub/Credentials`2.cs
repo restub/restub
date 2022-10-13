@@ -13,7 +13,7 @@ namespace Restub
     /// <typeparam name="TAuthToken">The type of the auth token DTO.</typeparam>
     public abstract class Credentials<TClient, TAuthToken> : Credentials
         where TClient : RestubClient
-        where TAuthToken : AuthToken, new()
+        where TAuthToken : AuthToken
     {
         /// <inheritdoc/>
         public override AuthToken Authenticate(RestubClient client) =>

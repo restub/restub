@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Restub.DataContracts;
-
-namespace Restub.Tests.Cdek
+﻿namespace Restub.Tests.Cdek
 {
     /// <summary>
     /// Sample CDEK API Credentials.

@@ -4,7 +4,6 @@ using System.Text;
 using System.Xml;
 using RestSharp;
 using RestSharp.Authenticators;
-using RestSharp.Serialization;
 using Restub.DataContracts;
 using Restub.Toolbox;
 
