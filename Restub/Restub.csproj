@@ -23,10 +23,14 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
+    v0.8.8
+    — #11 ErrorResponse deserialization extension point
+    — #12 Base Authenticator class now has 2 generic arguments instead of 3
+
     v0.7.6
     — #10 RestubException inner exception argument is now optional
-    — #9 Added virtual method CreateException
-    — #8 CreateAuthenticator should return IAuthenticator
+    — #9 Added virtual method CreateException for replaceable exception classes
+    — #8 CreateAuthenticator now returns IAuthenticator for more flexibility
 
     v0.6.6
     — #7 Added IRestubSerializer interface for easier unit testing.
