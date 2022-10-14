@@ -17,7 +17,7 @@ namespace Restub.Tests.Pochta.Otpravka
         {
         }
 
-        protected override IAuthenticator CreateAuthenticator() =>
+        protected override IAuthenticator GetAuthenticator() =>
             new OtpravkaAuthenticator(this, (OtpravkaCredentials)Credentials);
 
         /// <summary>

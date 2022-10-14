@@ -29,15 +29,15 @@ namespace Restub
         /// </summary>
         /// <param name="сlient">REST API client.</param>
         /// <param name="credentials">Credentials.</param>
-        public RestubClient(IRestClient сlient, Credentials credentials)
+        public RestubClient(IRestClient сlient, Credentials credentials = null)
         {
             Credentials = credentials;
             Serializer = CreateSerializer();
 
             // Set up REST client
             Client = сlient;
-            Client.Authenticator = CreateAuthenticator();
-            Client.Encoding = CreateEncoding();
+            Client.Authenticator = GetAuthenticator();
+            Client.Encoding = GetEncoding();
             Client.ThrowOnDeserializationError = false;
             Client.UseSerializer(() => Serializer);
         }
@@ -46,19 +46,19 @@ namespace Restub
         /// Gets the encoding used by REST service.
         /// </summary>
         /// <returns>Encoding for REST messages.</returns>
-        protected virtual Encoding CreateEncoding() => Encoding.UTF8;
+        protected virtual Encoding GetEncoding() => Encoding.UTF8;
 
         /// <summary>
-        /// When overridden in the derived class, returns the authenticator.
+        /// Gets or creates the authenticator.
         /// If derived class implements <see cref="IAuthenticator"/> interface, returns itself.
         /// If authentication is not required, returns null.
         /// </summary>
         /// <returns>Authenticator for REST requests, or null.</returns>
-        protected virtual IAuthenticator CreateAuthenticator() =>
+        protected virtual IAuthenticator GetAuthenticator() =>
             this as IAuthenticator;
 
         /// <summary>
-        /// Creates the serializer.
+        /// Creates the serializer for the <see cref="Serializer"/> property.
         /// </summary>
         /// <returns>Serializer for REST messages.</returns>
         protected virtual IRestubSerializer CreateSerializer() =>

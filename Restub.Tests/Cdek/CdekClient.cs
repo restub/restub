@@ -35,7 +35,7 @@ namespace Restub.Tests.Cdek
         {
         }
 
-        protected override IAuthenticator CreateAuthenticator() =>
+        protected override IAuthenticator GetAuthenticator() =>
             new CdekAuthenticator(this, (CdekCredentials)Credentials);
 
         protected override IRestubSerializer CreateSerializer() =>
@@ -72,7 +72,7 @@ namespace Restub.Tests.Cdek
         /// RU: https://api-docs.cdek.ru/33829418.html
         /// </summary>
         public CdekRegion[] GetRegions(int? size = null, int? page = null) =>
-        	Get<CdekRegion[]>("location/regions", r => r.AddQueryString(new { size, page }));
+            Get<CdekRegion[]>("location/regions", r => r.AddQueryString(new { size, page }));
 
         /// <summary>
         /// Gets the list of cities.

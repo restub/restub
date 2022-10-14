@@ -6,14 +6,14 @@ using RestSharp.Authenticators;
 namespace Restub.Tests.LocalServer
 {
     /// <summary>
-    /// Local REST API server sample client using http basic authorization.
+    /// Local REST API server sample client, uses http basic authorization.
     /// </summary>
     public partial class LocalhostClient : RestubClient, IAuthenticator
     {
         public LocalhostClient(int port, string userName, string password)
             : base("http://127.0.0.1:" + port)
         {
-            var authToken = CreateEncoding().GetBytes($"{userName}:{password}");
+            var authToken = GetEncoding().GetBytes($"{userName}:{password}");
             Authorization = $"Basic {Convert.ToBase64String(authToken)}";
         }
 
