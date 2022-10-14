@@ -1,6 +1,4 @@
-﻿using RestSharp;
-
-namespace Restub.Tests.Cdek
+﻿namespace Restub.Tests.Cdek
 {
     /// <summary>
     /// Sample CDEK API authenticator using credentials.
@@ -12,21 +10,9 @@ namespace Restub.Tests.Cdek
         {
         }
 
-        private string AuthHeader { get; set; }
-
-        public override void SetAuthToken(CdekAuthToken authToken) =>
-            AuthHeader = string.IsNullOrWhiteSpace(authToken?.AccessToken) ?
-                null : "Bearer " + authToken.AccessToken;
-
-        public override void Authenticate(IRestClient client, IRestRequest request)
+        public override void InitAuthHeaders(CdekAuthToken authToken)
         {
-            base.Authenticate(client, request);
-
-            // add authorization header, if any
-            if (!string.IsNullOrWhiteSpace(AuthHeader))
-            {
-                request.AddOrUpdateParameter("Authorization", AuthHeader, ParameterType.HttpHeader);
-            }
+            AuthHeaders["Authorization"] = $"Bearer {authToken.AccessToken}";
         }
     }
 }

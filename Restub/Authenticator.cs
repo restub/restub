@@ -1,6 +1,7 @@
 ﻿using Restub.DataContracts;
 using RestSharp;
 using RestSharp.Authenticators;
+using Headers = System.Collections.Generic.Dictionary<string, string>;
 
 namespace Restub
 {
@@ -9,6 +10,11 @@ namespace Restub
     /// </summary>
     public abstract class Authenticator : IAuthenticator
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authenticator"/> class.
+        /// </summary>
+        /// <param name="apiClient">Rest API client.</param>
+        /// <param name="credentials">User's credentials.</param>
         public Authenticator(RestubClient apiClient, Credentials credentials)
         {
             State = AuthState.NotAuthenticated;
@@ -29,11 +35,22 @@ namespace Restub
 
         protected internal AuthToken BaseAuthToken { get; set; }
 
-        // real API client will save an authentication header
-        // private string AuthHeader { get; set; }
+        /// <summary>
+        /// Authentication headers populated by the <see cref="InitAuthHeaders(AuthToken)"/> method.
+        /// </summary>
+        protected Headers AuthHeaders { get; } = new Headers();
 
-        public abstract void SetAuthToken(AuthToken authToken);
+        /// <summary>
+        /// Populates the <see cref="AuthHeaders"/> dictionary.
+        /// </summary>
+        /// <param name="authToken">Authentication token returned by the <see cref="Credentials"/>.</param>
+        public abstract void InitAuthHeaders(AuthToken authToken);
 
+        /// <summary>
+        /// Initializes the authentication and populates the authentication headers.
+        /// </summary>
+        /// <param name="client">Rest API client.</param>
+        /// <param name="request">Rest request to populate.</param>
         public virtual void Authenticate(IRestClient client, IRestRequest request)
         {
             // perform authentication request
@@ -41,15 +58,15 @@ namespace Restub
             {
                 State = AuthState.InProgress;
                 BaseAuthToken = BaseCredentials.Authenticate(BaseClient);
-                SetAuthToken(BaseAuthToken);
+                InitAuthHeaders(BaseAuthToken);
                 State = AuthState.Authenticated;
             }
 
-            // real API client: add authorization header if any
-            // if (!string.IsNullOrWhiteSpace(AuthHeader))
-            // {
-            //    request.AddOrUpdateParameter("Authorization", AuthHeader, ParameterType.HttpHeader);
-            // }
+            // add authorization headers, if any
+            foreach (var header in AuthHeaders)
+            {
+                request.AddOrUpdateParameter(header.Key, header.Value, ParameterType.HttpHeader);
+            }
         }
 
         public virtual void Logout()

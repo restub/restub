@@ -28,14 +28,11 @@ namespace Restub
             set => BaseAuthToken = value;
         }
 
-        // real API client would save an authentication header
-        // private string AuthHeader { get; set; }
+        public override sealed void InitAuthHeaders(AuthToken authToken) =>
+            InitAuthHeaders((TAuthToken)authToken);
 
-        public override sealed void SetAuthToken(AuthToken authToken) =>
-            SetAuthToken((TAuthToken)authToken);
-
-        public abstract void SetAuthToken(TAuthToken authToken);
+        public abstract void InitAuthHeaders(TAuthToken authToken);
             // real client would do something like this:
-            // AuthHeader = "Bearer " + authToken.AccessToken;
+            // AuthHeaders["Authorization"] = "Bearer " + authToken.AccessToken;
     }
 }
