@@ -43,16 +43,18 @@ namespace Restub
         }
 
         /// <summary>
-        /// Creates the encoding used by REST service.
+        /// Gets the encoding used by REST service.
         /// </summary>
         /// <returns>Encoding for REST messages.</returns>
         protected virtual Encoding CreateEncoding() => Encoding.UTF8;
 
         /// <summary>
-        /// When overridden in the derived class, creates the authenticator.
+        /// When overridden in the derived class, returns the authenticator.
+        /// If derived class implements <see cref="IAuthenticator"/> interface, returns itself.
+        /// If authentication is not required, returns null.
         /// </summary>
         /// <returns>Authenticator for REST requests, or null.</returns>
-        protected virtual IAuthenticator CreateAuthenticator() => null;
+        protected virtual IAuthenticator CreateAuthenticator() => this as IAuthenticator;
 
         /// <summary>
         /// Creates the serializer.

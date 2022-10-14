@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EmbedIO;
 using EmbedIO.Actions;
+using EmbedIO.Authentication;
 using EmbedIO.WebApi;
 using NUnit.Framework;
 
@@ -18,13 +19,17 @@ namespace Restub.Tests.LocalServer
     {
         private const int HttpPort = 34567;
 
+        private const string UserName = "scott";
+
+        private const string Password = "tiger";
+
         private WebServer Server { get; set; }
 
         private Task ServerTask { get; set; }
 
         private CancellationTokenSource ServerCancel { get; set; } = new CancellationTokenSource();
 
-        private LocalhostClient Client { get; } = new LocalhostClient(HttpPort)
+        private LocalhostClient Client { get; } = new LocalhostClient(HttpPort, UserName, Password)
         {
             Tracer = TestContext.Progress.WriteLine
         };
@@ -43,6 +48,8 @@ namespace Restub.Tests.LocalServer
             new WebServer(o => o
                 .WithUrlPrefix("http://127.0.0.1:" + HttpPort)
                 .WithMode(HttpListenerMode.EmbedIO))
+                .WithModule(new BasicAuthenticationModule("/")
+                    .WithAccount(UserName, Password))
                 .WithWebApi("/api", m => m
                     .WithController<LocalhostPersonController>()
                     .WithController<LocalhostDocumentController>())
