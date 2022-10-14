@@ -23,6 +23,11 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
+    v0.10.8
+    — #15 SourceLink: embed the untracked sources
+    — #16 Allow returning the rest client as IAuthenticator
+    — #17 Renamed CreateEncoding to GetEncoding, CreateAuthenticator to GetAuthenticator
+
     v0.9.8
     — #13 Added SourceLink, enabled deterministic release builds
     — #14 Added AuthHeaders to the base Authenticator class
