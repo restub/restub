@@ -12,6 +12,11 @@ namespace Restub
         where TClient : RestubClient
         where TAuthToken : AuthToken
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Authenticator{TClient, TAuthToken}"/> class.
+        /// </summary>
+        /// <param name="apiClient">Rest API client.</param>
+        /// <param name="credentials">User's credentials.</param>
         public Authenticator(TClient apiClient, Credentials<TClient, TAuthToken> credentials)
             : base(apiClient, credentials)
         {
@@ -22,15 +27,26 @@ namespace Restub
         protected Credentials<TClient, TAuthToken> Credentials =>
             (Credentials<TClient, TAuthToken>)BaseCredentials;
 
+        /// <summary>
+        /// Gets or sets the authentication token returned by <see cref="Credentials"/>.
+        /// </summary>
         protected internal TAuthToken AuthToken
         {
             get => (TAuthToken)BaseAuthToken;
             set => BaseAuthToken = value;
         }
 
+        /// <summary>
+        /// Populates the <see cref="AuthHeaders"/> dictionary.
+        /// </summary>
+        /// <param name="authToken">Authentication token returned by the <see cref="Credentials"/>.</param>
         public override sealed void InitAuthHeaders(AuthToken authToken) =>
             InitAuthHeaders((TAuthToken)authToken);
 
+        /// <summary>
+        /// Populates the <see cref="AuthHeaders"/> dictionary.
+        /// </summary>
+        /// <param name="authToken">Authentication token returned by the <see cref="Credentials"/>.</param>
         public abstract void InitAuthHeaders(TAuthToken authToken);
             // real client would do something like this:
             // AuthHeaders["Authorization"] = "Bearer " + authToken.AccessToken;
