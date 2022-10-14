@@ -23,6 +23,10 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
+    v0.9.8
+    — #13 Added SourceLink, enabled deterministic release builds
+    — #14 Added AuthHeaders to the base Authenticator class
+
     v0.8.8
     — #11 ErrorResponse deserialization extension point
     — #12 Base Authenticator class now has 2 generic arguments instead of 3
