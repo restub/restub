@@ -54,7 +54,8 @@ namespace Restub
         /// If authentication is not required, returns null.
         /// </summary>
         /// <returns>Authenticator for REST requests, or null.</returns>
-        protected virtual IAuthenticator CreateAuthenticator() => this as IAuthenticator;
+        protected virtual IAuthenticator CreateAuthenticator() =>
+            this as IAuthenticator;
 
         /// <summary>
         /// Creates the serializer.
