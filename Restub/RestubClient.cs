@@ -224,6 +224,13 @@ namespace Restub
         protected virtual IHasErrors DeserializeErrorResponse(IRestResponse response) =>
             Serializer.Deserialize<ErrorResponse>(response);
 
+        /// <summary>
+        /// Creates the API-specific exception class.
+        /// </summary>
+        /// <param name="res">Rest response.</param>
+        /// <param name="msg">Error message.</param>
+        /// <param name="errors"><see cref="IHasErrors"/> instance containing error details.</param>
+        /// <returns>Exception to be thrown.</returns>
         protected virtual Exception CreateException(IRestResponse res, string msg, IHasErrors errors) =>
             new RestubException(res.StatusCode, msg, res.ErrorException);
 
