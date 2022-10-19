@@ -163,7 +163,7 @@ namespace Restub.Toolbox
         /// </summary>
         /// <param name="type">The type to examine.</param>
         public static Type GetNonNullableType(this Type type) =>
-            type.IsNullable() ? type.GetGenericArguments().First() : type;
+            (type?.IsNullable() ?? false) ? type.GetGenericArguments().First() : type;
 
         /// <summary>
         /// Gets the default value of the given type.

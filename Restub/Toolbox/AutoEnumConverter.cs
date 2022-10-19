@@ -2,6 +2,7 @@
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Restub.DataContracts;
 
 namespace Restub.Toolbox
 {
@@ -23,6 +24,26 @@ namespace Restub.Toolbox
 
             // enum should be serialized as number
             writer.WriteValue(value);
+        }
+
+        /// <iheritdocs/>
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            try
+            {
+                return base.ReadJson(reader, objectType, existingValue, serializer);
+            }
+            catch (JsonSerializationException)
+            {
+                // if we can't deserialize an unknown enum member, return the default value
+                var value = DefaultEnumMemberAttribute.GetDefaultValue(objectType);
+                if (value != null)
+                {
+                    return value;
+                }
+
+                throw;
+            }
         }
     }
 }

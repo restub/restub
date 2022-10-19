@@ -3,6 +3,8 @@ using System.Runtime.Serialization;
 using Restub.Toolbox;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using System.Reflection;
+using Restub.DataContracts;
 
 namespace Restub.Tests
 {
@@ -113,6 +115,50 @@ namespace Restub.Tests
             // unknown value
             Assert.That(Serialize((TestEnum)123), Is.EqualTo("123"));
             Assert.That(Deserialize<TestEnum>("123"), Is.EqualTo((TestEnum)123));
+        }
+
+        [Test]
+        public void AutoEnumSerializationThrowsOnUnknownEnumMember()
+        {
+            Assert.That(() => Deserialize<TestEnum>("\"goodbye\""),
+                Throws.TypeOf<JsonSerializationException>().With.Message
+                    .Contains("Error converting value \"goodbye\" to type"));
+        }
+
+        [DefaultEnumMember("1")]
+        public enum BrokenEnum
+        {
+            Unknown
+        }
+
+        [DataContract, DefaultEnumMember(Unknown)]
+        public enum DefaultTestEnum
+        {
+            [EnumMember(Value = "unknown")]
+            Unknown,
+
+            [EnumMember(Value = "hello")]
+            HelloThere
+        }
+
+        [Test]
+        public void DefaultEnumMemberAttributeReturnsDefaultEnumMemberIfItsDefined()
+        {
+            Assert.That(DefaultEnumMemberAttribute.GetDefaultValue(typeof(object)), Is.Null);
+            Assert.That(DefaultEnumMemberAttribute.GetDefaultValue(typeof(DayOfWeek)), Is.Null);
+            Assert.That(DefaultEnumMemberAttribute.GetDefaultValue(typeof(BrokenEnum)), Is.Null);
+            Assert.That(DefaultEnumMemberAttribute.GetDefaultValue(typeof(BrokenEnum?)), Is.Null);
+            Assert.That(DefaultEnumMemberAttribute.GetDefaultValue(typeof(DefaultTestEnum)), Is.EqualTo(DefaultTestEnum.Unknown));
+            Assert.That(DefaultEnumMemberAttribute.GetDefaultValue(typeof(DefaultTestEnum?)), Is.EqualTo(DefaultTestEnum.Unknown));
+        }
+
+        [Test]
+        public void AutoEnumSerializationDoesntThrowOnUnknownEnumMemberIfDefaultValueIsSpecified()
+        {
+            Assert.That(Deserialize<DefaultTestEnum>("\"goodbye\""), Is.EqualTo(DefaultTestEnum.Unknown));
+            Assert.That(() => Deserialize<DayOfWeek>("\"goodbye\""), Throws
+                .TypeOf<JsonSerializationException>().With.Message
+                    .Contains("Error converting value \"goodbye\" to type"));
         }
     }
 }
