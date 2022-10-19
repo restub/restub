@@ -68,7 +68,13 @@ namespace Restub
         /// Gets the library name.
         /// </summary>
         public virtual string LibraryName =>
-            $"restub v{typeof(RestubClient).GetAssemblyVersion()}";
+            $"restub v{LibraryVersion}";
+
+        /// <summary>
+        /// Gets the library version.
+        /// </summary>
+        public virtual string LibraryVersion =>
+            GetType().GetAssemblyVersion();
 
         /// <summary>
         /// Gets the REST API client.

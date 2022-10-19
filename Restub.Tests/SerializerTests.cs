@@ -3,7 +3,6 @@ using System.Runtime.Serialization;
 using Restub.Toolbox;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using System.Reflection;
 using Restub.DataContracts;
 
 namespace Restub.Tests
