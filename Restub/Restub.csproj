@@ -23,7 +23,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
-    v0.11.9
+    v0.11.8
     — #18 Added DefaultEnumMemberAttribute to handle missing enum values
     — #19 Added extension methods and unit tests from PochtaSdk library
 
