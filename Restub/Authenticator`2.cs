@@ -22,8 +22,14 @@ namespace Restub
         {
         }
 
+        /// <summary>
+        /// Gets the REST client.
+        /// </summary>
         protected TClient Client => (TClient)BaseClient;
 
+        /// <summary>
+        /// Gets the credentials.
+        /// </summary>
         protected Credentials<TClient, TAuthToken> Credentials =>
             (Credentials<TClient, TAuthToken>)BaseCredentials;
 
@@ -37,14 +43,14 @@ namespace Restub
         }
 
         /// <summary>
-        /// Populates the <see cref="AuthHeaders"/> dictionary.
+        /// Populates the AuthHeaders dictionary.
         /// </summary>
         /// <param name="authToken">Authentication token returned by the <see cref="Credentials"/>.</param>
         public override sealed void InitAuthHeaders(AuthToken authToken) =>
             InitAuthHeaders((TAuthToken)authToken);
 
         /// <summary>
-        /// Populates the <see cref="AuthHeaders"/> dictionary.
+        /// Populates the AuthHeaders dictionary.
         /// </summary>
         /// <param name="authToken">Authentication token returned by the <see cref="Credentials"/>.</param>
         public abstract void InitAuthHeaders(TAuthToken authToken);

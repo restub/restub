@@ -82,14 +82,14 @@ namespace Restub.Tests.LocalServer
         public void LocalhostGetAllPeople()
         {
             var result = Client.GetAllPeople();
-            Assert.That(result, Is.Not.Null.Or.Empty);
+            Assert.That(result, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
         public void LocalhostGetPerson()
         {
             var result = Client.GetPerson(2);
-            Assert.That(result, Is.Not.Null.Or.Empty);
+            Assert.That(result, Is.Not.Null);
             Assert.That(result.ID, Is.EqualTo(2));
             Assert.That(result.Name, Is.EqualTo("Bob"));
             Assert.That(result.Size, Is.Not.EqualTo(0));
@@ -168,14 +168,14 @@ namespace Restub.Tests.LocalServer
         public async Task LocalhostGetAllPeopleAsync()
         {
             var result = await Client.GetAllPeopleAsync();
-            Assert.That(result, Is.Not.Null.Or.Empty);
+            Assert.That(result, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
         public async Task LocalhostGetPersonAsync()
         {
             var result = await Client.GetPersonAsync(2);
-            Assert.That(result, Is.Not.Null.Or.Empty);
+            Assert.That(result, Is.Not.Null);
             Assert.That(result.ID, Is.EqualTo(2));
             Assert.That(result.Name, Is.EqualTo("Bob"));
             Assert.That(result.Size, Is.Not.EqualTo(0));
@@ -242,7 +242,7 @@ namespace Restub.Tests.LocalServer
         public void LocalhostGetAllDocuments()
         {
             var result = Client.GetAllDocuments();
-            Assert.That(result, Is.Not.Null.Or.Empty);
+            Assert.That(result, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]
@@ -286,7 +286,7 @@ namespace Restub.Tests.LocalServer
         public async Task LocalhostGetAllDocumentsAsync()
         {
             var result = await Client.GetAllDocumentsAsync();
-            Assert.That(result, Is.Not.Null.Or.Empty);
+            Assert.That(result, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]

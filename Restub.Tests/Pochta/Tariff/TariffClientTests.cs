@@ -42,7 +42,7 @@ namespace Restub.Tests.Pochta.Tariff
                 Time = "0223",
             });
 
-            Assert.That(json, Is.Not.Null.Or.Empty);
+            Assert.That(json, Is.Not.Null.And.Not.Empty);
             Assert.That(json, Does.StartWith("{").And.EndWith("}"));
             Assert.That(json, Does.Contain("344038"));
         }
@@ -60,7 +60,7 @@ namespace Restub.Tests.Pochta.Tariff
                 Time = "0223",
             });
 
-            Assert.That(html, Is.Not.Null.Or.Empty);
+            Assert.That(html, Is.Not.Null.And.Not.Empty);
             Assert.That(html.Trim(), Does.StartWith("<").And.EndWith(">"));
             Assert.That(html, Does.Contain("<p>"));
             Assert.That(html, Does.Contain("344038"));

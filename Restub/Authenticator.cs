@@ -22,8 +22,14 @@ namespace Restub
             BaseCredentials = credentials;
         }
 
+        /// <summary>
+        /// Base Restub client.
+        /// </summary>
         protected RestubClient BaseClient { get; set; }
 
+        /// <summary>
+        /// Base credentials.
+        /// </summary>
         protected Credentials BaseCredentials { get; set; }
 
         private AuthState State { get; set; }
@@ -33,6 +39,9 @@ namespace Restub
             NotAuthenticated, InProgress, Authenticated
         }
 
+        /// <summary>
+        /// Base authentication token returned by credentials.
+        /// </summary>
         protected internal AuthToken BaseAuthToken { get; set; }
 
         /// <summary>
@@ -69,6 +78,9 @@ namespace Restub
             }
         }
 
+        /// <summary>
+        /// Log out and finish the current session.
+        /// </summary>
         public virtual void Logout()
         {
             State = AuthState.NotAuthenticated;

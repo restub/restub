@@ -28,10 +28,10 @@ namespace Restub.Tests.Github
         public void GithubClientReturnsUsersOrganizations()
         {
             var orgs = Client.GetUserOrgs("yallie");
-            Assert.That(orgs, Is.Not.Null.Or.Empty);
+            Assert.That(orgs, Is.Not.Null.And.Not.Empty);
 
             var org = orgs.First(o => o.Login == "restub");
-            Assert.That(org, Is.Not.Null.Or.Empty);
+            Assert.That(org, Is.Not.Null);
             Assert.That(org.Url, Is.EqualTo("https://api.github.com/orgs/restub"));
         }
 
@@ -51,10 +51,10 @@ namespace Restub.Tests.Github
         public async Task GithubClientReturnsUsersOrganizationsAsync()
         {
             var orgs = await Client.GetUserOrgsAsync("yallie");
-            Assert.That(orgs, Is.Not.Null.Or.Empty);
+            Assert.That(orgs, Is.Not.Null.And.Not.Empty);
 
             var org = orgs.First(o => o.Login == "restub");
-            Assert.That(org, Is.Not.Null.Or.Empty);
+            Assert.That(org, Is.Not.Null);
             Assert.That(org.Url, Is.EqualTo("https://api.github.com/orgs/restub"));
         }
     }

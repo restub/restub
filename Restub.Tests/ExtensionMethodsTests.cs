@@ -34,7 +34,7 @@ namespace Restub.Tests
         [Test]
         public void GetAssemblyVersionReturnsAssemblyVersion()
         {
-            Assert.That(GetType().GetAssemblyVersion(), Is.Not.Null.Or.Empty);
+            Assert.That(GetType().GetAssemblyVersion(), Is.Not.Null.And.Not.Empty);
             Assert.That(() => new Version(GetType().GetAssemblyVersion()), Throws.Nothing);
         }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Runtime.Serialization;
-using Restub.DataContracts;
 
 namespace Restub
 {
@@ -16,7 +15,6 @@ namespace Restub
         /// </summary>
         /// <param name="code">HTTP status code.</param>
         /// <param name="message">Error message.</param>
-        /// <param name="errorResponse"><see cref="ErrorResponse"/> instance, if available.</param>
         /// <param name="innerException">Optional inner <see cref="Exception"/> instance.</param>
         public RestubException(HttpStatusCode code, string message, Exception innerException = null)
             : base(GetMessage(code, message), innerException)

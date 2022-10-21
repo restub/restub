@@ -9,6 +9,7 @@
     <Copyright>Alexey Yakovlev</Copyright>
     <Company>https://github.com/yallie</Company>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>restub</PackageId>
     <PackageProjectUrl>https://github.com/restub/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>

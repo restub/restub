@@ -169,7 +169,7 @@ namespace Restub.Toolbox
         /// Gets the default value of the given type.
         /// </summary>
         /// <typeparam name="T">The type.</typeparam>
-        public static T GetDefaultValue<T>() => default(T);
+        public static T GetDefaultValue<T>() => default;
 
         /// <summary>
         /// Gets the default value of the given type.

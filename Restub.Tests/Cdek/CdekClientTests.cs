@@ -39,7 +39,7 @@ namespace Restub.Tests.Cdek
             Assert.That(regions.Length, Is.EqualTo(10));
 
             // page is specified, but size is not specified
-            Assert.That(() => CdekClient.GetRegions(page: 3), 
+            Assert.That(() => CdekClient.GetRegions(page: 3),
                 Throws.TypeOf<CdekException>().With
                     .Message.Contains("[size] is empty").And
                         .Not.Message.Contains("Cannot deserialize"));
@@ -49,11 +49,11 @@ namespace Restub.Tests.Cdek
         public void CdekClientReturnsCities()
         {
             var cities = CdekClient.GetCities(new[] { "ru", "en" }, size: 3);
-            Assert.That(cities, Is.Not.Null.Or.Empty);
+            Assert.That(cities, Is.Not.Null.And.Not.Empty);
 
             cities = CdekClient.GetCities(city: "Гороховец");
-            Assert.That(cities, Is.Not.Null.Or.Empty);
-            Assert.That(cities.First(), Is.Not.Null.Or.Empty);
+            Assert.That(cities, Is.Not.Null.And.Not.Empty);
+            Assert.That(cities.First(), Is.Not.Null);
 
             var city = cities.First();
             Assert.That(city.City, Is.EqualTo("Гороховец"));

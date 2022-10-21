@@ -7,6 +7,9 @@ namespace Restub.Toolbox
     /// </summary>
     public class DateOnlyConverter : IsoDateTimeConverter
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DateOnlyConverter"/> class.
+        /// </summary>
         public DateOnlyConverter()
         {
             DateTimeFormat = "yyyy-MM-dd";

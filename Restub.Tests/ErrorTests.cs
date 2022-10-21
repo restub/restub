@@ -39,7 +39,7 @@ namespace Restub.Tests
                 select t;
 
             var responseTypes = errorEnabledResponseTypes.ToArray();
-            Assert.That(responseTypes, Is.Not.Null.Or.Empty);
+            Assert.That(responseTypes, Is.Not.Null.And.Not.Empty);
             Assert.That(responseTypes.Length, Is.GreaterThan(0));
 
             foreach (var t in responseTypes)

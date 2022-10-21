@@ -165,7 +165,7 @@ namespace Restub.Tests.Pochta.Otpravka
             var people = Client.CleanFullName("Христофор Бонифатьевич Врунгель", "Иван Рылов",
                 "Иванка Петкова", "Марфа Васильевна", "Достоевский Константин Константинович");
 
-            Assert.That(people, Is.Not.Null.Or.Empty);
+            Assert.That(people, Is.Not.Null.And.Not.Empty);
             Assert.That(people.Length, Is.EqualTo(5));
 
             var person = people[0];

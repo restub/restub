@@ -189,6 +189,11 @@ namespace Restub
             }
         }
 
+        /// <summary>
+        /// Checks if the response is failed and throws an exception.
+        /// </summary>
+        /// <param name="response">The response to check.</param>
+        /// <param name="errorResponse">Deserialized error response supporting <see cref="IHasErrors"/> interface, optional.</param>
         protected virtual void ThrowOnFailure(IRestResponse response, IHasErrors errorResponse)
         {
             // if a response has errors, treat it as a failure

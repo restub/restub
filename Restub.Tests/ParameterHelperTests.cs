@@ -126,8 +126,10 @@ namespace Restub.Tests
         [Test]
         public void SimpleParameters()
         {
-            var req = new StubRequest();
-            req.JsonSerializer = new NewtonsoftSerializer();
+            var req = new StubRequest
+            {
+                JsonSerializer = new NewtonsoftSerializer()
+            };
 
             req.AddParameters(new Request { String = "test", Int = 32 }, ParameterType.QueryString);
             Assert.That(req.Params.Count, Is.EqualTo(3));
@@ -155,8 +157,10 @@ namespace Restub.Tests
         [Test]
         public void DateParameters()
         {
-            var req = new StubRequest();
-            req.JsonSerializer = new NewtonsoftSerializer();
+            var req = new StubRequest
+            {
+                JsonSerializer = new NewtonsoftSerializer()
+            };
 
             var date = new DateTimeOffset(2022, 09, 23, 1, 15, 20, TimeSpan.FromHours(7));
             req.AddParameters(new DateRequest
