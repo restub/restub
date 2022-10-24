@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using NUnit.Framework;
 using RestSharp;
@@ -65,6 +66,26 @@ namespace Restub.Tests
 
             var x2 = string.Join(", ", source.DistinctBy(s => s.name).Select(s => $"{s.id}:{s.name}"));
             Assert.That(x2, Is.EqualTo("1:One, 1:Two, 3:Three"));
+        }
+
+        public enum Codes
+        {
+            Unknown,
+
+            [Display(Name = "Mysterious foobar error")]
+            FooBar,
+
+            [Display(Name = "Three two one")]
+            Thre21 = 321,
+        }
+
+        [Test]
+        public void GetDisplayNameReturnsEnumerationsDisplayName()
+        {
+            Assert.That(Codes.Unknown.GetDisplayName(), Is.EqualTo("Unknown"));
+            Assert.That(Codes.FooBar.GetDisplayName(), Is.EqualTo("Mysterious foobar error"));
+            Assert.That(((Codes)321).GetDisplayName(), Is.EqualTo("Three two one"));
+            Assert.That(((Codes)123).GetDisplayName(), Is.EqualTo("123"));
         }
     }
 }

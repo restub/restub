@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Restub\Restub.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+  </ItemGroup>
+
 </Project>

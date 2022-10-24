@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using RestSharp;
@@ -98,6 +99,32 @@ namespace Restub.Toolbox
                     yield return item;
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns the display name of the given enum value.
+        /// Display name is specified with [Display(Name = "foo")] attribute.
+        /// If the attribute is not defined, the name of the enum value is returned.
+        /// </summary>
+        /// <typeparam name="T">The type of the enum.</typeparam>
+        /// <param name="enumValue">The value to get the display name.</param>
+        /// <returns>The display name of the given value.</returns>
+        public static string GetDisplayName<T>(this T enumValue) where T : struct, Enum
+        {
+            var valueName = Enum.GetName(typeof(T), enumValue);
+            if (valueName == null)
+            {
+                valueName = enumValue.ToString();
+            }
+
+            var field = typeof(T).GetField(valueName);
+            var display = field?.GetCustomAttribute<DisplayAttribute>();
+            if (display != null)
+            {
+                valueName = display.Name;
+            }
+
+            return valueName;
         }
     }
 }
