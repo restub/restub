@@ -24,6 +24,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
+    v0.12.8
+    — #21 Added DisplayAttribute support for supplying names for enum values
+
     v0.11.8
     — #18 Added DefaultEnumMemberAttribute to handle missing enum values
     — #19 Added extension methods and unit tests from PochtaSdk library
