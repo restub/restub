@@ -13,6 +13,9 @@ namespace Restub.Tests.LocalServer
         public string GetDocument(int id) =>
             Get<string>("/api/docs/{id}", r => r.AddUrlSegment("id", id));
 
+        public byte[] GetDocumentBytes(int id) =>
+            Get<byte[]>("/api/docs/{id}/bytes", r => r.AddUrlSegment("id", id));
+
         public string UpdateDocument(int id, string doc) =>
             Put<string>("/api/docs/{id}", doc, r => r.AddUrlSegment("id", id));
 

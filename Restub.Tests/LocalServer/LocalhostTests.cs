@@ -253,6 +253,14 @@ namespace Restub.Tests.LocalServer
         }
 
         [Test]
+        public void LocalhostGetDocumentBytes()
+        {
+            var result = Client.GetDocumentBytes(4);
+            var garbage = LocalhostDocumentController.Garbage(15);
+            Assert.That(result, Is.EqualTo(Encoding.UTF8.GetBytes(garbage)));
+        }
+
+        [Test]
         public void LocalhostClientAddDocument()
         {
             var result = Client.AddDocument("Bozo");
@@ -294,6 +302,14 @@ namespace Restub.Tests.LocalServer
         {
             var result = await Client.GetDocumentAsync(2);
             Assert.That(result, Is.EqualTo("Two"));
+        }
+
+        [Test]
+        public async Task LocalhostGetDocumentBytesAsync()
+        {
+            var result = await Client.GetDocumentBytesAsync(4);
+            var garbage = LocalhostDocumentController.Garbage(15);
+            Assert.That(result, Is.EqualTo(Encoding.UTF8.GetBytes(garbage)));
         }
 
         [Test]

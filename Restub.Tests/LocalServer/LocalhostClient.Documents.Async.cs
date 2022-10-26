@@ -14,6 +14,9 @@ namespace Restub.Tests.LocalServer
         public Task<string> GetDocumentAsync(int id) =>
             GetAsync<string>("/api/docs/{id}", r => r.AddUrlSegment("id", id));
 
+        public Task<byte[]> GetDocumentBytesAsync(int id) =>
+            GetAsync<byte[]>("/api/docs/{id}/bytes", r => r.AddUrlSegment("id", id));
+
         public Task<string> UpdateDocumentAsync(int id, string doc) =>
             PutAsync<string>("/api/docs/{id}", doc, r => r.AddUrlSegment("id", id));
 

@@ -37,6 +37,18 @@ namespace Restub
             CR + "}" + CR;
         }
 
+        internal static string FormatBody(IRestResponse response, int maxBufferSize = 256)
+        {
+            if (response.ContentType != null &&
+                !response.ContentType.Contains("octet") &&
+                !response.ContentType.Contains("binary"))
+            {
+                return FormatBody(response.Content, IsJson(response.ContentType));
+            }
+
+            return "body: binary data, " + FormatBytes(response.RawBytes, maxBufferSize);
+        }
+
         internal static string FormatBody(string content, bool isJson = true)
         {
             if (string.IsNullOrWhiteSpace(content))
@@ -50,6 +62,30 @@ namespace Restub
             }
 
             return "body:" + CR + content + CR;
+        }
+
+        internal static string FormatBytes(byte[] rawBytes, int maxBufferSize = 256)
+        {
+            if (rawBytes == null || rawBytes.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            var cr = CR + "  ";
+            var trail = string.Empty;
+            if (rawBytes.Length > maxBufferSize)
+            {
+                trail = cr + "...";
+            }
+
+            return $"{rawBytes.Length} bytes: {{" + cr +
+                string.Join(cr, rawBytes.Take(maxBufferSize)
+                    .Select((c, i) => new { c, i })
+                    .GroupBy(x => x.i / 16)
+                    .Select(g => string.Join(" ", g.Take(16)
+                        .Select(cc => string.Format("{0:x2}", (int)cc.c))))) +
+                trail + CR +
+                "}" + CR;
         }
 
         private static bool IsJson(string contentType) =>
@@ -183,7 +219,7 @@ namespace Restub
                 var timings = FormatTimings(response);
                 var headerList = response.Headers.Select(p => Tuple.Create(p.Name, p.Value));
                 var headers = FormatHeaders(headerList);
-                var body = FormatBody(response.Content, IsJson(response.ContentType));
+                var body = FormatBody(response, maxBufferSize: 256);
                 var errorMessage = string.IsNullOrWhiteSpace(response.ErrorMessage) ? string.Empty :
                     "error message: " + response.ErrorMessage + CR;
 

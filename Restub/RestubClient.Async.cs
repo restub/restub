@@ -26,14 +26,22 @@ namespace Restub
             PrepareRequest(request, apiMethodName);
 
             // special treatment for the string requests
-            if (typeof(T) == typeof(string))
+            if (typeof(T) == typeof(string) || typeof(T) == typeof(byte[]))
             {
                 var response = await Client.ExecuteAsync(request);
 
                 // there is no body deserialization step, so we need to trace explicitly
                 Trace(response);
                 ThrowOnFailure(response);
-                return (T)(object)response.Content;
+
+                if (typeof(T) == typeof(string))
+                {
+                    return (T)(object)response.Content;
+                }
+                else // typeof(T) == typeof(byte[])
+                {
+                    return (T)(object)response.RawBytes;
+                }
             }
             else
             {
