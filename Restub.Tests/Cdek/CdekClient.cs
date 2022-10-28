@@ -42,7 +42,10 @@ namespace Restub.Tests.Cdek
             new CdekSerializer();
 
         protected override Exception CreateException(IRestResponse res, string msg, IHasErrors errors) =>
-            new CdekException(res.StatusCode, msg, base.CreateException(res, msg, errors));
+            new CdekException(res.StatusCode, msg, base.CreateException(res, msg, errors))
+            {
+                ErrorResponseText = res.Content,
+            };
 
         protected override IHasErrors DeserializeErrorResponse(IRestResponse response) =>
             Serializer.Deserialize<CdekErrorResponse>(response);

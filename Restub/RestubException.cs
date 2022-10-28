@@ -37,10 +37,16 @@ namespace Restub
             return code.ToString();
         }
 
+        /// <summary>
+        /// REST API error response, as is (optional).
+        /// </summary>
+        public string ErrorResponseText { get; set; }
+
         /// <inheritdoc/>
         protected RestubException(SerializationInfo info, StreamingContext context)
         {
             StatusCode = (HttpStatusCode)info.GetInt32("Code");
+            ErrorResponseText = info.GetString("ErrorResponseText");
         }
 
         /// <inheritdoc/>
@@ -49,6 +55,7 @@ namespace Restub
             base.GetObjectData(info, context);
 
             info.AddValue("Code", (int)StatusCode);
+            info.AddValue("ErrorResponseText", ErrorResponseText);
         }
     }
 }

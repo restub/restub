@@ -246,7 +246,10 @@ namespace Restub
         /// <param name="errors"><see cref="IHasErrors"/> instance containing error details.</param>
         /// <returns>Exception to be thrown.</returns>
         protected virtual Exception CreateException(IRestResponse res, string msg, IHasErrors errors) =>
-            new RestubException(res.StatusCode, msg, res.ErrorException);
+            new RestubException(res.StatusCode, msg, res.ErrorException)
+            {
+                ErrorResponseText = res.Content,
+            };
 
         internal static string GetErrorMessage(IHasErrors errorResponse) =>
             errorResponse?.GetErrorMessage() ?? string.Empty;

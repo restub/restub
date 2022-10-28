@@ -42,7 +42,8 @@ namespace Restub.Tests.Cdek
             Assert.That(() => CdekClient.GetRegions(page: 3),
                 Throws.TypeOf<CdekException>().With
                     .Message.Contains("[size] is empty").And
-                        .Not.Message.Contains("Cannot deserialize"));
+                    .Not.Message.Contains("Cannot deserialize").And
+                    .Property("ErrorResponseText").Contains("v2_field_is_empty"));
         }
 
         [Test]
