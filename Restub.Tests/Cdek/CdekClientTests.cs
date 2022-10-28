@@ -43,7 +43,8 @@ namespace Restub.Tests.Cdek
                 Throws.TypeOf<CdekException>().With
                     .Message.Contains("[size] is empty").And
                     .Not.Message.Contains("Cannot deserialize").And
-                    .Property("ErrorResponseText").Contains("v2_field_is_empty"));
+                    .Property(nameof(RestubException.ErrorResponseText))
+                        .Contains("v2_field_is_empty"));
         }
 
         [Test]

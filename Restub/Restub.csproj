@@ -24,6 +24,10 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
+    v0.14
+    — #23 JsonFormatter helper class is now public
+    — #24 Added RestubException.ErrorResponseText property
+
     v0.13
     — #22 Added support for byte[] return type for downloading small files
 
