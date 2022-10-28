@@ -6,7 +6,7 @@ namespace Restub.Toolbox
     /// <summary>
     /// Dependency-free JSON formatter.
     /// </summary>
-    internal static class JsonFormatter
+    public static class JsonFormatter
     {
         /// <summary>
         /// Formats the given JSON code.
