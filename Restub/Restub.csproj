@@ -24,6 +24,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
+    v0.15
+    — #25 Added BoolIntConverter
+
     v0.14
     — #23 JsonFormatter helper class is now public
     — #24 Added RestubException.ErrorResponseText property
