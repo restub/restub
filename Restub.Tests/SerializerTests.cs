@@ -159,5 +159,35 @@ namespace Restub.Tests
                 .TypeOf<JsonSerializationException>().With.Message
                     .Contains("Error converting value \"goodbye\" to type"));
         }
+
+        [DataContract]
+        public class IntBool
+        {
+            [DataMember(Name = "email"), JsonConverter(typeof(BoolIntConverter))]
+            public bool EmailNotification { get; set; }
+
+            [DataMember(Name = "sms"), JsonConverter(typeof(BoolIntConverter))]
+            public bool? SmsNotification { get; set; }
+        }
+
+        [Test]
+        [TestCase(false, null, "{\"email\":0,\"sms\":null}")]
+        [TestCase(true, null, "{\"email\":1,\"sms\":null}")]
+        [TestCase(false, false, "{\"email\":0,\"sms\":0}")]
+        [TestCase(true, false, "{\"email\":1,\"sms\":0}")]
+        [TestCase(false, true, "{\"email\":0,\"sms\":1}")]
+        [TestCase(true, true, "{\"email\":1,\"sms\":1}")]
+        public void BoolIntConverterWorksAsExpected(bool email, bool? sms, string result)
+        {
+            Assert.That(Serialize(new IntBool
+            {
+                EmailNotification = email,
+                SmsNotification = sms
+            }), Is.EqualTo(result));
+
+            var dto = Deserialize<IntBool>(result);
+            Assert.That(dto.EmailNotification, Is.EqualTo(email));
+            Assert.That(dto.SmsNotification, Is.EqualTo(sms));
+        }
     }
 }
