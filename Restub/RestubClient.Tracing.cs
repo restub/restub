@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using RestSharp;
-using RestSharp.Serialization.Json;
 using Restub.Toolbox;
 
 namespace Restub
@@ -39,9 +38,14 @@ namespace Restub
 
         internal static string FormatBody(IRestResponse response, int maxBufferSize = 256)
         {
+            // TODO: improve binary data detection
+            // TODO: whitelist textual mime types instead of blacklisting?
             if (response.ContentType != null &&
                 !response.ContentType.Contains("octet") &&
-                !response.ContentType.Contains("binary"))
+                !response.ContentType.Contains("binary") &&
+                !response.ContentType.Contains("pdf") &&
+                !response.ContentType.Contains("zip") &&
+                !response.ContentType.Contains("compressed"))
             {
                 return FormatBody(response.Content, IsJson(response.ContentType));
             }

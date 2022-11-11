@@ -208,5 +208,14 @@ namespace Restub.Tests.Pochta.Otpravka
             Assert.That(person.MiddleName, Is.EqualTo("Константинович"));
             Assert.That(person.Surname, Is.EqualTo("Достоевский"));
         }
+
+        [Test, Explicit]
+        public void TestPdfTracing()
+        {
+            var result = Client.Get<byte[]>("1.0/forms/{id}/f7pdf?print-type=THERMO", r =>
+                r.AddUrlSegment("id", 919017044)
+                // .AddHeader("Accept", "application/octet-stream")
+            );
+        }
     }
 }
