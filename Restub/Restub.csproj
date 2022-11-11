@@ -24,6 +24,9 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
 
+    v0.16
+    — #26 Fixed a tracing issue with REST API methods returning PDF files
+
     v0.15
     — #25 Added BoolIntConverter
 
