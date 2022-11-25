@@ -22,7 +22,7 @@ namespace Restub
         /// </summary>
         public Action<string, object[]> Tracer { get; set; }
 
-        private static string CR = Environment.NewLine;
+        private static readonly string CR = Environment.NewLine;
 
         internal static string FormatHeaders(IEnumerable<Tuple<string, object>> headers)
         {

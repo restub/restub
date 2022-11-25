@@ -89,5 +89,13 @@ namespace Restub.Tests.Cdek
                 country_codes = countries,
                 size,
             }));
+
+        /// <summary>
+        /// Creates delivery order.
+        /// EN: https://api-docs.cdek.ru/33828802.html
+        /// RU: https://api-docs.cdek.ru/29923926.html
+        /// </summary>
+        public CdekOrderResponse CreateDeliveryOrder(CdekOrderRequest request) =>
+            Post<CdekOrderResponse>("orders", request);
     }
 }

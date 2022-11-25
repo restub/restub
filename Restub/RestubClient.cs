@@ -256,7 +256,11 @@ namespace Restub
 
         private void AddRequestBody(IRestRequest request, object body)
         {
-            if (request == null || body == null)
+            // don't check if body is null, add it anyway to init Content-type header
+            if (request == null ||
+                request.Method == Method.GET ||
+                request.Method == Method.HEAD ||
+                request.Method == Method.OPTIONS)
             {
                 return;
             }
