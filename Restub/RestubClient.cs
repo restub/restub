@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Xml;
 using RestSharp;
@@ -253,6 +254,23 @@ namespace Restub
 
         internal static string GetErrorMessage(IHasErrors errorResponse) =>
             errorResponse?.GetErrorMessage() ?? string.Empty;
+
+        /// <summary>
+        /// This method is invoked before executing the request.
+        /// </summary>
+        /// <param name="request">Rest request to handle.</param>
+        protected virtual void BeforeExecute(IRestRequest request)
+        {
+        }
+
+        /// <summary>
+        /// This method is invoked after executing the request.
+        /// </summary>
+        /// <param name="request">Rest request to handle.</param>
+        /// <param name="response">Rest response to handle.</param>
+        protected virtual void AfterExecute(IRestRequest request, IRestResponse response)
+        {
+        }
 
         private void AddRequestBody(IRestRequest request, object body)
         {

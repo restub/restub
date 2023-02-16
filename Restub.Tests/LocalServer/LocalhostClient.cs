@@ -25,5 +25,21 @@ namespace Restub.Tests.LocalServer
         public string Hello() => Get<string>("/");
 
         public Task<string> HelloAsync() => GetAsync<string>("/");
+
+        public event EventHandler<IRestRequest> BeforeExecuteRequest;
+
+        public event EventHandler<Tuple<IRestRequest, IRestResponse>> AfterExecuteRequest;
+
+        protected override void BeforeExecute(IRestRequest request)
+        {
+            base.BeforeExecute(request);
+            BeforeExecuteRequest?.Invoke(this, request);
+        }
+
+        protected override void AfterExecute(IRestRequest request, IRestResponse response)
+        {
+            base.AfterExecute(request, response);
+            AfterExecuteRequest?.Invoke(this, Tuple.Create(request, response));
+        }
     }
 }

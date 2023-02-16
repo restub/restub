@@ -8,6 +8,7 @@ using EmbedIO.Actions;
 using EmbedIO.Authentication;
 using EmbedIO.WebApi;
 using NUnit.Framework;
+using RestSharp;
 
 namespace Restub.Tests.LocalServer
 {
@@ -338,6 +339,59 @@ namespace Restub.Tests.LocalServer
                 Throws.TypeOf<RestubException>()
                     .With.Property(nameof(RestubException.StatusCode))
                         .EqualTo(HttpStatusCode.NotFound));
+        }
+
+        private async Task TestBeforeAndAfterExecute(Func<Task> executeTest)
+        {
+            var beforeExecuteCalled = false;
+            void beforeExecute(object sender, IRestRequest request) =>
+                beforeExecuteCalled = true;
+
+            var afterExecuteCalled = false;
+            void afterExecute(object sender, Tuple<IRestRequest, IRestResponse> eargs)
+            {
+                afterExecuteCalled = true;
+                Assert.That(eargs.Item2.Request, Is.SameAs(eargs.Item1));
+            }
+
+            try
+            {
+                Client.BeforeExecuteRequest += beforeExecute;
+                Client.AfterExecuteRequest += afterExecute;
+
+                Assert.That(beforeExecuteCalled, Is.False);
+                Assert.That(afterExecuteCalled, Is.False);
+
+                await executeTest();
+
+                Assert.That(beforeExecuteCalled, Is.True);
+                Assert.That(afterExecuteCalled, Is.True);
+            }
+            finally 
+            {
+                Client.BeforeExecuteRequest -= beforeExecute;
+                Client.AfterExecuteRequest -= afterExecute;
+            }
+        }
+
+        [Test]
+        public async Task BeforeAndAfterExecuteTests()
+        {
+            // Execute<T> and ExecuteAsync<T>
+            await TestBeforeAndAfterExecute(() => Client.GetAllDocumentsAsync());
+            await TestBeforeAndAfterExecute(() =>
+            {
+                Client.GetAllDocuments();
+                return Task.CompletedTask;
+            });
+
+            // Execute and ExecuteAsync
+            await TestBeforeAndAfterExecute(() => Client.GetDocumentBytesAsync(2));
+            await TestBeforeAndAfterExecute(() =>
+            {
+                Client.GetDocumentBytes(2);
+                return Task.CompletedTask;
+            });
         }
     }
 }

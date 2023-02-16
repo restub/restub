@@ -28,7 +28,9 @@ namespace Restub
             // special treatment for the string requests
             if (typeof(T) == typeof(string) || typeof(T) == typeof(byte[]))
             {
+                BeforeExecute(request);
                 var response = await Client.ExecuteAsync(request);
+                AfterExecute(request, response);
 
                 // there is no body deserialization step, so we need to trace explicitly
                 Trace(response);
@@ -45,7 +47,9 @@ namespace Restub
             }
             else
             {
+                BeforeExecute(request);
                 var response = await Client.ExecuteAsync<T>(request);
+                AfterExecute(request, response);
 
                 // handle REST exceptions
                 ThrowOnFailure(response);
