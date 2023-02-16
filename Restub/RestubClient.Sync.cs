@@ -29,7 +29,7 @@ namespace Restub
             {
                 BeforeExecute(request);
                 var response = Client.Execute(request);
-                AfterExecute(request, response);
+                AfterExecute(response);
 
                 // there is no body deserialization step, so we need to trace explicitly
                 Trace(response);
@@ -48,7 +48,7 @@ namespace Restub
             {
                 BeforeExecute(request);
                 var response = Client.Execute<T>(request);
-                AfterExecute(request, response);
+                AfterExecute(response);
 
                 // handle REST exceptions
                 ThrowOnFailure(response);

@@ -41,6 +41,9 @@ namespace Restub
             Client.Encoding = GetEncoding();
             Client.ThrowOnDeserializationError = false;
             Client.UseSerializer(() => Serializer);
+
+            // Add cookie container if missing
+            Client.CookieContainer = Client.CookieContainer ?? new CookieContainer();
         }
 
         /// <summary>
@@ -64,6 +67,12 @@ namespace Restub
         /// <returns>Serializer for REST messages.</returns>
         protected virtual IRestubSerializer CreateSerializer() =>
             new NewtonsoftSerializer();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the client
+        /// automatically adds all cookies sent by the server.
+        /// </summary>
+        public bool AddCookies { get; set; } = true;
 
         /// <summary>
         /// Gets the library name.
@@ -266,10 +275,17 @@ namespace Restub
         /// <summary>
         /// This method is invoked after executing the request.
         /// </summary>
-        /// <param name="request">Rest request to handle.</param>
         /// <param name="response">Rest response to handle.</param>
-        protected virtual void AfterExecute(IRestRequest request, IRestResponse response)
+        protected virtual void AfterExecute(IRestResponse response)
         {
+            if (AddCookies)
+            {
+                // copy response cookies
+                foreach (var c in response.Cookies)
+                {
+                    Client.CookieContainer.Add(new Cookie(c.Name, c.Value, c.Path, c.Domain));
+                }
+            }
         }
 
         private void AddRequestBody(IRestRequest request, object body)

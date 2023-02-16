@@ -24,5 +24,10 @@ namespace Restub.Tests.LocalServer
 
         public string DeleteDocument(int id) =>
             Delete<string>("/api/docs/{id}", null, r => r.AddUrlSegment("id", id));
+
+        public string SetCookie(string name, string value) =>
+            Get<string>("/api/docs/setcookie/{name}/{value}", r => r
+                .AddUrlSegment("name", name)
+                .AddUrlSegment("value", value));
     }
 }

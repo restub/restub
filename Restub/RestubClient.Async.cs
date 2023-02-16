@@ -30,7 +30,7 @@ namespace Restub
             {
                 BeforeExecute(request);
                 var response = await Client.ExecuteAsync(request);
-                AfterExecute(request, response);
+                AfterExecute(response);
 
                 // there is no body deserialization step, so we need to trace explicitly
                 Trace(response);
@@ -49,7 +49,7 @@ namespace Restub
             {
                 BeforeExecute(request);
                 var response = await Client.ExecuteAsync<T>(request);
-                AfterExecute(request, response);
+                AfterExecute(response);
 
                 // handle REST exceptions
                 ThrowOnFailure(response);

@@ -111,5 +111,14 @@ namespace Restub.Tests.LocalServer
                 await writer.WriteAsync(doc);
             }
         }
+
+        [Route(HttpVerbs.Get, "/docs/setcookie/{name}/{value}")]
+        public Task SetCookie(string name, string value)
+        {
+            var cookie = new Cookie(name, value);
+            Response.Cookies.Add(cookie);
+
+            return HttpContext.SendStringAsync($"{name} = {value}", MimeType.PlainText, WebServer.DefaultEncoding);
+        }
     }
 }

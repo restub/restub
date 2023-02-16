@@ -25,5 +25,10 @@ namespace Restub.Tests.LocalServer
 
         public Task<string> DeleteDocumentAsync(int id) =>
             DeleteAsync<string>("/api/docs/{id}", null, r => r.AddUrlSegment("id", id));
+
+        public Task<string> SetCookieAsync(string name, string value) =>
+            GetAsync<string>("/api/docs/setcookie/{name}/{value}", r => r
+                .AddUrlSegment("name", name)
+                .AddUrlSegment("value", value));
     }
 }

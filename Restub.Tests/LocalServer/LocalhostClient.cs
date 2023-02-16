@@ -28,7 +28,7 @@ namespace Restub.Tests.LocalServer
 
         public event EventHandler<IRestRequest> BeforeExecuteRequest;
 
-        public event EventHandler<Tuple<IRestRequest, IRestResponse>> AfterExecuteRequest;
+        public event EventHandler<IRestResponse> AfterExecuteRequest;
 
         protected override void BeforeExecute(IRestRequest request)
         {
@@ -36,10 +36,10 @@ namespace Restub.Tests.LocalServer
             BeforeExecuteRequest?.Invoke(this, request);
         }
 
-        protected override void AfterExecute(IRestRequest request, IRestResponse response)
+        protected override void AfterExecute(IRestResponse response)
         {
-            base.AfterExecute(request, response);
-            AfterExecuteRequest?.Invoke(this, Tuple.Create(request, response));
+            base.AfterExecute(response);
+            AfterExecuteRequest?.Invoke(this, response);
         }
     }
 }

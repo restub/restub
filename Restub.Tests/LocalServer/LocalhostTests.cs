@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -16,7 +17,7 @@ namespace Restub.Tests.LocalServer
     /// Sends REST requests to the local web server.
     /// </summary>
     [TestFixture]
-    public class LocalhostTests : IDisposable
+    public sealed class LocalhostTests : IDisposable
     {
         private const int HttpPort = 34567;
 
@@ -45,7 +46,7 @@ namespace Restub.Tests.LocalServer
             TestContext.Progress.WriteLine($"*** SERVER STARTED, PORT: {HttpPort} ***");
         }
 
-        private WebServer CreateWebServer() =>
+        private static WebServer CreateWebServer() =>
             new WebServer(o => o
                 .WithUrlPrefix("http://127.0.0.1:" + HttpPort)
                 .WithMode(HttpListenerMode.EmbedIO))
@@ -341,6 +342,8 @@ namespace Restub.Tests.LocalServer
                         .EqualTo(HttpStatusCode.NotFound));
         }
 
+        // event handlers and cookies
+
         private async Task TestBeforeAndAfterExecute(Func<Task> executeTest)
         {
             var beforeExecuteCalled = false;
@@ -348,11 +351,8 @@ namespace Restub.Tests.LocalServer
                 beforeExecuteCalled = true;
 
             var afterExecuteCalled = false;
-            void afterExecute(object sender, Tuple<IRestRequest, IRestResponse> eargs)
-            {
+            void afterExecute(object sender, IRestResponse response) =>
                 afterExecuteCalled = true;
-                Assert.That(eargs.Item2.Request, Is.SameAs(eargs.Item1));
-            }
 
             try
             {
@@ -392,6 +392,52 @@ namespace Restub.Tests.LocalServer
                 Client.GetDocumentBytes(2);
                 return Task.CompletedTask;
             });
+        }
+
+        private async Task TestCookies(string name, string value, Func<Task> executeTest)
+        {
+            void afterExecute(object sender, IRestResponse response)
+            {
+                var index = response.Cookies.ToDictionary(c => c.Name, c => c.Value);
+                Assert.That(index[name], Is.EqualTo(value));
+            }
+
+            Client.AfterExecuteRequest += afterExecute;
+            try
+            {
+                await executeTest();
+            }
+            finally
+            {
+                Client.AfterExecuteRequest -= afterExecute;
+            }
+        }
+
+        [Test]
+        public async Task TestCookiesSyncAndAsync()
+        {
+            await TestCookies("Hello", "World", () =>
+            {
+                var result = Client.SetCookie("Hello", "World");
+                Assert.That(result, Is.EqualTo("Hello = World"));
+                return Task.CompletedTask;
+            });
+
+            await TestCookies("Goodbye", "There", async () =>
+            {
+                var result = await Client.SetCookieAsync("Goodbye", "There");
+                Assert.That(result, Is.EqualTo("Goodbye = There"));
+            });
+
+#if !NET462
+            // all cookies should be now set
+            var cookies = Client.Client.CookieContainer
+                .GetAllCookies().OfType<Cookie>()
+                .ToDictionary(c => c.Name, c => c.Value);
+
+            Assert.That(cookies["Hello"], Is.EqualTo("World"));
+            Assert.That(cookies["Goodbye"], Is.EqualTo("There"));
+#endif
         }
     }
 }
