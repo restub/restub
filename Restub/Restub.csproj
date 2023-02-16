@@ -27,7 +27,7 @@
     v0.18
     — #31 Added BeforeExecute and AfterExecute virtual methods
     — #30 Updated Newtonsoft.Json to version 13.0.2
-    - #29 Implemented automatic cookie management
+    — #29 Implemented automatic cookie management
 
     v0.17
     — #27 Fixed missing Content-type header when request body is not supplied
