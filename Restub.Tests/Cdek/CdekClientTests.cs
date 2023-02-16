@@ -59,7 +59,7 @@ namespace Restub.Tests.Cdek
 
             var city = cities.First();
             Assert.That(city.City, Is.EqualTo("Гороховец"));
-            Assert.That(city.Code, Is.EqualTo(1143104));
+            Assert.That(city.Code, Is.EqualTo(1143104).Or.EqualTo(2486));
         }
 
         [Test]

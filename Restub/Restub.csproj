@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://github.com/restub/</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/restub/restub.git</RepositoryUrl>
-    <PackageTags>rest; api; stub; client; framework; tracing; logging</PackageTags>
+    <PackageTags>restub; rest; api; stub; client; framework; tracing; logging</PackageTags>
     <PackageIcon>restub.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Title>restub</Title>
@@ -23,6 +23,12 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>Beta release. What's new:
+
+    v0.18
+    — #30 Updated Newtonsoft.Json to version 13.0.2
+
+    v0.17
+    — #27 Fixed missing Content-type header when request body is not supplied
 
     v0.16
     — #26 Fixed a tracing issue with REST API methods returning PDF files
@@ -85,7 +91,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="RestSharp" Version="106.15.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
